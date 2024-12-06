@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="images">
+    <file>home.png</file>
+    <file>pngimg.com - mario_PNG125.png</file>
+    <file>VideoStabilization.png</file>
+    <file>User.jpg</file>
+    <file>try-this-trainer-approved-chest-day-workout.jpg</file>
+    <file>try-this-trainer-approved-chest-day-workout 1.jpg</file>
+    <file>profile.jpg</file>
+    <file>logo.jpg</file>
+    <file>DietCamera.jpg</file>
+    <file>Aperture.jpg</file>
+    <file>ad.jpg</file>
+    <file>ad_frame.mp4</file>
+  </qresource>
+</RCC>
