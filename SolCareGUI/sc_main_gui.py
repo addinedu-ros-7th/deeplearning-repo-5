@@ -12,12 +12,9 @@ import numpy as np
 import time
 import base64
 import cv2
-from yt_dlp import YoutubeDL
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 
-def Go2Home():
-    SunnyMainWindow().show()
 
 server_address = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
 server_port = 8080  # 포트 번호
@@ -61,6 +58,33 @@ def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
         return response
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+ui_file_path = os.path.join(current_dir, 'login.ui')
+login = uic.loadUiType(ui_file_path)[0]
+
+class SunnyLoginWindow(QMainWindow, login):
+    def __init__(self):
+        super(SunnyLoginWindow, self).__init__()
+        self.setupUi(self)
+
+        self.lb_logo.setStyleSheet("""
+                            QLabel {
+                                border-image: url('img/logo.jpg');
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: none; 
+                            }
+                        """)
+
+        self.le_UserID.addAction(QIcon('img/UserID.png'), QLineEdit.ActionPosition.LeadingPosition)
+        self.le_UserPassword.addAction(QIcon('img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
+        self.btn_create.clicked.connect(self.go2Home)
+        self.btn_login.clicked.connect(self.go2Home)
+
+    def go2Home(self):
+        self.main_window = SunnyMainWindow()
+        self.main_window.show()
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_file_path = os.path.join(current_dir, 'main.ui')
 main = uic.loadUiType(ui_file_path)[0]
 
@@ -70,56 +94,59 @@ class SunnyMainWindow(QMainWindow, main):
         self.cap = None
         self.setupUi(self)
 
+        # Navigation bar Design Setup
         self.btn_home.setStyleSheet("""
-            QPushButton {
-                border-image: url('src/home.png');
-                background-repeat: no-repeat;
-                background-position: center;
-                border: none; /* Remove border if not needed */
-            }
-        """)
+                            QPushButton {
+                                border-image: url('img/home.png');
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: none; 
+                            }
+                        """)
         self.btn_camera.setStyleSheet("""
-                    QPushButton {
-                        border-image: url('src/VideoStabilization.png');
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        border: none; /* Remove border if not needed */
-                    }
-                """)
+                                    QPushButton {
+                                        border-image: url('img/VideoStabilization.png');
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                        border: none; 
+                                    }
+                                """)
         self.btn_profile.setStyleSheet("""
-                    QPushButton {
-                        border-image: url('src/User.jpg');
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        border: none; /* Remove border if not needed */
-                    }
-                """)
+                                    QPushButton {
+                                        border-image: url('img/User.jpg');
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                        border: none; 
+                                    }
+                                """)
+
         self.lb_logo.setStyleSheet("""
                     QLabel {
-                        border-image: url('src/logo.jpg');
+                        border-image: url('img/logo.jpg');
                         background-repeat: no-repeat;
                         background-position: center;
-                        border: none; /* Remove border if not needed */
+                        border: none; 
                     }
                 """)
 
-        # 광고 영상은 바로 시작
-
-        self.cap = cv2.VideoCapture(os.path.join(current_dir, 'src/ad_frame.mp4'))
+        # Ad video
+        self.cap = cv2.VideoCapture(os.path.join(current_dir, 'img/ad_frame.mp4'))
         self.ad_timer = QTimer()
-        self.ad_timer.start(30)  # Start the webcam timer
+        self.ad_timer.start(30)  #No trigger, JUST PLAY !!
         self.ad_timer.timeout.connect(self.ad_frame)  # ㅊall update_frame function every time when timer is expired
 
 
-        # function to run when button cilicked
-
+        # auto function to run when button clicked (timeout!!)
         self.webcam_timer = QTimer()
         self.webcam_timer.timeout.connect(self.update_webcam_frame)  # ㅊall update_frame function every time when timer is expired
 
         self.btn_cardio.clicked.connect(self.start_webcam)
         self.btn_weighlifting.clicked.connect(self.start_webcam)
-        self.btn_camera.clicked.connect(self.food_camera)
-        # self.btn_home.clicked.connect(self.Go2Home)
+
+        #Page Move
+        self.btn_camera.clicked.connect(self.go2food_camera)
+        self.btn_profile.clicked.connect(self.go2profile)
+
 
         self.is_cardio_activate = False
         self.is_weightlifting_activate = False
@@ -147,26 +174,6 @@ class SunnyMainWindow(QMainWindow, main):
         self.timer.stop()
         super().closeEvent(event)
 
-    # def requestTCP(self):
-    #     server_address = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
-    #     server_port = 8080
-    #
-    #     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #     client_socket.connect((server_address, server_port))
-    #
-    #     # message 생성
-    #     messages = []
-    #     messages.append("Hello")  # KEY
-    #     messages.append("My")
-    #     messages.append("name")
-    #     messages.append("is")
-    #     messages.append("Donggyun")
-    #
-    #     client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-    #     response = client_socket.recv(1024).decode('utf-8')
-    #     client_socket.close()
-    #     print(response)
-
     def ad_frame(self):
         if not self.cap.isOpened():
             print("Video file not found or cannot be opened.")
@@ -186,67 +193,62 @@ class SunnyMainWindow(QMainWindow, main):
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
         QTimer.singleShot(15000, self.ad_frame)
 
-    def food_camera(self):
-        self.food_camera_window = SunnyFoodCamera()
+    def go2food_camera(self):
+        self.food_camera_window = SunnyFoodCameraWindow()
         self.food_camera_window.show()
+    def go2profile(self):
+        self.profile_window = SunnyProfileWindow()
+        self.profile_window.show()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_file_path = os.path.join(current_dir, 'food_camera.ui')
 food_camera_window = uic.loadUiType(ui_file_path)[0]
 
-class SunnyFoodCamera(QMainWindow, food_camera_window):
+class SunnyFoodCameraWindow(QMainWindow, food_camera_window):
     def __init__(self):
-        super(SunnyFoodCamera, self).__init__()
+        super(SunnyFoodCameraWindow, self).__init__()
         self.cap = None
         self.setupUi(self)
-
+        # Navigation bar Design Setup
         self.btn_home.setStyleSheet("""
                     QPushButton {
-                        border-image: url('src/home.png');
+                        border-image: url('img/home.png');
                         background-repeat: no-repeat;
                         background-position: center;
-                        border: none; /* Remove border if not needed */
+                        border: none; 
                     }
                 """)
         self.btn_camera.setStyleSheet("""
                             QPushButton {
-                                border-image: url('src/VideoStabilization.png');
+                                border-image: url('img/VideoStabilization.png');
                                 background-repeat: no-repeat;
                                 background-position: center;
-                                border: none; /* Remove border if not needed */
+                                border: none; 
                             }
                         """)
         self.btn_profile.setStyleSheet("""
                             QPushButton {
-                                border-image: url('src/User.jpg');
+                                border-image: url('img/User.jpg');
                                 background-repeat: no-repeat;
                                 background-position: center;
-                                border: none; /* Remove border if not needed */
-                            }
-                        """)
-        self.lb_logo.setStyleSheet("""
-                            QLabel {
-                                border-image: url('src/logo.jpg');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                border: none; /* Remove border if not needed */
+                                border: none; 
                             }
                         """)
         self.btn_camera_shutter.setStyleSheet("""
                             QPushButton {
-                                border-image: url('src/Aperture.jpg');
+                                border-image: url('img/Aperture.jpg');
                                 background-repeat: no-repeat;
                                 background-position: center;
-                                border: none; /* Remove border if not needed */
+                                border: none; 
                             }
                         """)
 
         self.btn_file.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('src/Add_image.png');
+                                        border-image: url('img/Add_image.png');
                                         background-repeat: no-repeat;
                                         background-position: center;
-                                        border: none; /* Remove border if not needed */
+                                        border: none; 
                                     }
                                 """)
         # self.btn_home.clicked.connect(self.Go2Home)
@@ -283,10 +285,64 @@ class SunnyFoodCamera(QMainWindow, food_camera_window):
         re=requestTCP(messages, img=self.current_frame, iscamera=True)
         print(re)
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ui_file_path = os.path.join(current_dir, 'profile.ui')
+user_profile_window = uic.loadUiType(ui_file_path)[0]
+
+class SunnyProfileWindow(QMainWindow, user_profile_window):
+    def __init__(self):
+        super(SunnyProfileWindow, self).__init__()
+        self.cap = None
+        self.setupUi(self)
+
+        # Navigation bar Design Setup
+        self.btn_home.setStyleSheet("""
+                            QPushButton {
+                                border-image: url('img/home.png');
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: none; 
+                            }
+                        """)
+        self.btn_camera.setStyleSheet("""
+                                    QPushButton {
+                                        border-image: url('img/VideoStabilization.png');
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                        border: none; 
+                                    }
+                                """)
+        self.btn_profile.setStyleSheet("""
+                                    QPushButton {
+                                        border-image: url('img/User.jpg');
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                        border: none; 
+                                    }
+                                """)
+
+        self.lb_logo.setStyleSheet("""
+                            QLabel {
+                                border-image: url('img/logo.jpg');
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: none; 
+                            }
+                        """)
+        self.lb_menu.setStyleSheet("""
+                            QLabel {
+                                border-image: url('img/profile_menu.png');
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: none; 
+                            }
+                        """)
+
+
 if __name__ == '__main__':
     App = QApplication(sys.argv)
-    myWindow = SunnyMainWindow()
-    myWindow.show()
+    main_window = SunnyLoginWindow()
+    main_window.show()
     sys.exit(App.exec())
 
 

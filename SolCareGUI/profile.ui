@@ -13,31 +13,42 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
-  <widget class="QLabel" name="lb_webcam">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
+  <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>190</y>
-     <width>353</width>
-     <height>563</height>
+     <x>40</x>
+     <y>40</y>
+     <width>393</width>
+     <height>852</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img/try-this-trainer-approved-chest-day-workout.jpg);
-border-radius: 18px; 
-</string>
+    <string notr="true">background-color: #FAFAFA;</string>
    </property>
    <property name="text">
     <string/>
    </property>
+  </widget>
+  <widget class="QLabel" name="lb_logo">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>70</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/images/img/logo.jpg);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>:/images/logo.jpg</pixmap>
+   </property>
    <property name="scaledContents">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_profile">
@@ -100,75 +111,49 @@ padding: 5px;
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_weighlifting">
+  <widget class="QPushButton" name="btn_home">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>130</y>
-     <width>150</width>
-     <height>40</height>
+     <x>100</x>
+     <y>840</y>
+     <width>35</width>
+     <height>35</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>LOTTERIA CHAB</family>
-    </font>
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton {
-			
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 97, 255, 255), stop:1 rgba(96, 239, 255, 255));
-            color: black;              
-            border-radius: 5px; 
-            padding: 5px;
-}
-QPushButton:hover {
-            background-color: #EAEAEA; 
-}
-QPushButton:pressed {
-            background-color: #EAEAEA;
-}</string>
+    <string notr="true">border-image: url(:/images/img//home.png);
+border-radius: 5px; 
+padding: 5px;</string>
    </property>
    <property name="text">
-    <string>WEIGHTLEFTING</string>
+    <string/>
+   </property>
+   <property name="autoDefault">
+    <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_cardio">
+  <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>130</y>
-     <width>150</width>
-     <height>40</height>
+     <x>40</x>
+     <y>821</y>
+     <width>393</width>
+     <height>71</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>LOTTERIA CHAB</family>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton {
-		
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 88, 88, 255), stop:1 rgba(255, 200, 200, 255));
-            border-radius: 5px; 
-            padding: 5px;
-}
-QPushButton:hover {
-            background-color: #EAEAEA; 
-}
-QPushButton:pressed {
-            background-color: #EAEAEA;
-}</string>
+    <string notr="true">background-color: rgb(48, 79, 254);
+border-top-right-radius: 14px;
+border-top-left-radius: 14px;</string>
    </property>
    <property name="text">
-    <string>CARDIO</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_camera">
@@ -201,98 +186,49 @@ padding: 5px;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_logo">
+  <widget class="QLabel" name="lb_menu">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>70</y>
-     <width>111</width>
-     <height>41</height>
+     <x>66</x>
+     <y>383</y>
+     <width>342</width>
+     <height>438</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img/logo.jpg);</string>
+    <string notr="true">border-image: url(:/images/img/profile_menu.png);</string>
    </property>
    <property name="text">
     <string/>
    </property>
-   <property name="pixmap">
-    <pixmap>:/images/logo.jpg</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
   </widget>
-  <widget class="QPushButton" name="btn_home">
+  <widget class="QPushButton" name="btn_MY">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>840</y>
-     <width>35</width>
-     <height>35</height>
+     <x>70</x>
+     <y>420</y>
+     <width>341</width>
+     <height>31</height>
     </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img//home.png);
-border-radius: 5px; 
-padding: 5px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_background">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>40</y>
-     <width>393</width>
-     <height>852</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: #FAFAFA;</string>
+    <string notr="true">background-color: rgba(255, 255, 255,0);</string>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_menuba">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>821</y>
-     <width>393</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(48, 79, 254);
-border-top-right-radius: 14px;
-border-top-left-radius: 14px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <zorder>lb_background</zorder>
-  <zorder>lb_menuba</zorder>
-  <zorder>btn_camera</zorder>
-  <zorder>lb_webcam</zorder>
-  <zorder>btn_profile</zorder>
-  <zorder>btn_weighlifting</zorder>
-  <zorder>btn_cardio</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_5</zorder>
   <zorder>lb_logo</zorder>
+  <zorder>btn_profile</zorder>
   <zorder>btn_home</zorder>
+  <zorder>btn_camera</zorder>
+  <zorder>lb_menu</zorder>
+  <zorder>btn_MY</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

@@ -13,7 +13,47 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_2">
+  <widget class="QPushButton" name="btn_login">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>740</y>
+     <width>290</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(173, 247, 242, 255), stop:1 rgba(21, 170, 255, 255));
+color: black;              
+border-radius: 10px; 
+padding: 5px;
+</string>
+   </property>
+   <property name="text">
+    <string>LOGIN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_create">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>790</y>
+     <width>290</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #EFEFEF;
+color: black;              
+border-radius: 10px; 
+padding: 5px;
+</string>
+   </property>
+   <property name="text">
+    <string>CREATE ACCOUNT</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_background">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -32,122 +72,88 @@
   <widget class="QLabel" name="lb_logo">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>70</y>
-     <width>111</width>
-     <height>41</height>
+     <x>130</x>
+     <y>80</y>
+     <width>221</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">border-image: url(:/images/img/logo.jpg);</string>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="resource.qrc">:/images/logo.jpg</pixmap>
+    <pixmap>:/images/logo.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_UserID">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>260</y>
-     <width>70</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Spoqa Han Sans Neo</family>
-     <pointsize>13</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>ID:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_UserPassword">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>310</y>
-     <width>70</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Spoqa Han Sans Neo</family>
-     <pointsize>13</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Password:</string>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="le_UserID">
    <property name="geometry">
     <rect>
-     <x>219</x>
-     <y>260</y>
-     <width>150</width>
-     <height>21</height>
+     <x>110</x>
+     <y>400</y>
+     <width>260</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="le_UserPassword">
    <property name="geometry">
     <rect>
-     <x>219</x>
-     <y>310</y>
-     <width>150</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_login">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>770</y>
-     <width>291</width>
-     <height>41</height>
+     <x>110</x>
+     <y>470</y>
+     <width>260</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(173, 247, 242, 255), stop:1 rgba(21, 170, 255, 255));
-border-radius: 10px</string>
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
    </property>
-   <property name="text">
-    <string>LOGIN</string>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_createaccount">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>820</y>
-     <width>291</width>
-     <height>41</height>
+     <x>120</x>
+     <y>190</y>
+     <width>161</width>
+     <height>131</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>LOTTERIA CHAB</family>
+     <pointsize>48</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(228, 228, 228);
-border-radius: 10px
-</string>
+    <string notr="true">color: rgb(194, 215, 255);</string>
    </property>
    <property name="text">
-    <string>CREATE ACCOUNT</string>
+    <string>환영
+합니다</string>
    </property>
   </widget>
+  <zorder>lb_background</zorder>
+  <zorder>btn_login</zorder>
+  <zorder>btn_create</zorder>
+  <zorder>lb_logo</zorder>
+  <zorder>le_UserID</zorder>
+  <zorder>le_UserPassword</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>
