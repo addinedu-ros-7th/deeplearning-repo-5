@@ -221,6 +221,16 @@ padding: 5px;
     <string/>
    </property>
   </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>59</x>
+     <y>109</y>
+     <width>351</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
   <zorder>label_2</zorder>
   <zorder>label_5</zorder>
   <zorder>lb_logo</zorder>
@@ -229,6 +239,7 @@ padding: 5px;
   <zorder>btn_camera</zorder>
   <zorder>lb_menu</zorder>
   <zorder>btn_MY</zorder>
+  <zorder>widget</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

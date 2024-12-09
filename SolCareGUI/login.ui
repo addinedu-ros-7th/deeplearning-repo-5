@@ -124,36 +124,12 @@ border-radius: 15px</string>
     <enum>QLineEdit::Password</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>190</y>
-     <width>161</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>LOTTERIA CHAB</family>
-     <pointsize>48</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(194, 215, 255);</string>
-   </property>
-   <property name="text">
-    <string>환영
-합니다</string>
-   </property>
-  </widget>
   <zorder>lb_background</zorder>
   <zorder>btn_login</zorder>
   <zorder>btn_create</zorder>
   <zorder>lb_logo</zorder>
   <zorder>le_UserID</zorder>
   <zorder>le_UserPassword</zorder>
-  <zorder>label</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

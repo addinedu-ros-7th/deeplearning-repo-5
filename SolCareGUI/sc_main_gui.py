@@ -61,8 +61,22 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_file_path = os.path.join(current_dir, 'login.ui')
 login = uic.loadUiType(ui_file_path)[0]
 
-class SunnyLoginWindow(QMainWindow, login):
+class WindowControll:
     def __init__(self):
+        self.current_window = None  
+    def showwindow(self, windowtoopen):
+        if self.current_window:
+            self.current_window.hide()
+        
+        self.current_window = windowtoopen(self)
+        self.current_window.show()
+    # def ProfileWindow(self, windowtoopen):
+    
+    # def FoodCameraWindow(self, windowtoopen):
+    
+    # def 
+class SunnyLoginWindow(QMainWindow, login):
+    def __init__(self, control):
         super(SunnyLoginWindow, self).__init__()
         self.setupUi(self)
 
@@ -77,12 +91,29 @@ class SunnyLoginWindow(QMainWindow, login):
 
         self.le_UserID.addAction(QIcon('img/UserID.png'), QLineEdit.ActionPosition.LeadingPosition)
         self.le_UserPassword.addAction(QIcon('img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
-        self.btn_create.clicked.connect(self.go2Home)
-        self.btn_login.clicked.connect(self.go2Home)
 
-    def go2Home(self):
-        self.main_window = SunnyMainWindow()
-        self.main_window.show()
+
+        self.btn_login.clicked.connect(self.SendUserInfo)
+
+    def SendUserInfo(self):
+        user_info = []
+        user_id = self.le_UserID.text()
+        user_password = self.le_UserPassword.text()
+        user_info.append(user_id)
+        user_info.append(user_password)
+
+        print(user_info)
+
+        # requestTCP(user_id) # send User ID 
+        # requestTCP(user_password) # send User PW
+
+        messeage = ["Exist"]
+        if messeage != "Not Exist":
+            QMessageBox.warning(self, 'Log In Success',"Log In Success")
+            
+        else:
+            QMessageBox.warning(self, 'Warning',"User Info Not Exist Please Login")
+
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_file_path = os.path.join(current_dir, 'main.ui')
@@ -341,8 +372,8 @@ class SunnyProfileWindow(QMainWindow, user_profile_window):
 
 if __name__ == '__main__':
     App = QApplication(sys.argv)
-    main_window = SunnyLoginWindow()
-    main_window.show()
+    window_controll = WindowControll()
+    window_controll.showwindow(SunnyLoginWindow)
     sys.exit(App.exec())
 
 
