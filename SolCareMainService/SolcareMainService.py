@@ -17,6 +17,7 @@ from datetime import datetime
 
 from ultralytics import YOLO
 
+print("모델을 불러오는 중입니다...")
 test_thread_flag = True
 diet_model = YOLO("/home/hdk/ws/project/data/train7/weights/best.pt")
 
@@ -54,10 +55,11 @@ def test_thread(server_socket, set_time):
     socketList = [server_socket]
     while test_thread_flag:
         cnt += 1
-        print(cnt)
+        print("cnt:", cnt, "/", set_time)
         if cnt >= set_time:
             if not set_time == -1:
-                print("end thread")
+                print("end thread by cnt")
+                test_thread_flag = False
                 break
 
         # 클라이언트 연결 대기
@@ -143,8 +145,6 @@ def test_thread(server_socket, set_time):
                             # TODO: DB 저장
                             pass
 
-
-
                 except Exception as e:
                     print(f"오류 발생: {e}")
 
@@ -160,9 +160,8 @@ def test_thread(server_socket, set_time):
     server_socket.close()
     # cv2.destroyAllWindows()
 
-if __name__=="__main__":
-    # app = QApplication(sys.argv)
 
+if __name__=="__main__":
     # 서버 설정
     host0 = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
     port0 = 8080       # 포트 번호
@@ -171,17 +170,20 @@ if __name__=="__main__":
     server_socket0.bind((host0, port0))
     server_socket0.listen()
 
-    server_time = 600
+    server_time = 6
     tcp_controller_thread = threading.Thread(target=test_thread, 
                                              args=(server_socket0,server_time))
     tcp_controller_thread.start()
 
-    img = cv2.imread("/home/hdk/ws/project/data/Lenna.png")
-    cv2.imshow("test",img)
+    while True:
+        key = cv2.waitKey(1)
+        if key == ord('q'):
+            print("q 입력 종료")
+            break
 
-    print("test hdk")
+        if not test_thread_flag:
+            print("서버 타임 종료")
+            break
 
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
     test_thread_flag = False
     remote.close()
