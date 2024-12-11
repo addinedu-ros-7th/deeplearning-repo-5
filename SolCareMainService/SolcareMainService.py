@@ -179,6 +179,8 @@ if __name__=="__main__":
     img = cv2.imread("/home/hdk/ws/project/data/Lenna.png")
     cv2.imshow("test",img)
 
+    print("test hdk")
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     test_thread_flag = False
