@@ -57,10 +57,6 @@ def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
         client_socket.close()
         return response
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'login.ui')
-login = uic.loadUiType(ui_file_path)[0]
-
 class WindowControll:
     def __init__(self):
         self.current_window = None  
@@ -75,6 +71,11 @@ class WindowControll:
     # def FoodCameraWindow(self, windowtoopen):
     
     # def 
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ui_file_path = os.path.join(current_dir, 'login.ui')
+login = uic.loadUiType(ui_file_path)[0]
+
 class SunnyLoginWindow(QMainWindow, login):
     def __init__(self, control):
         super(SunnyLoginWindow, self).__init__()
@@ -114,6 +115,14 @@ class SunnyLoginWindow(QMainWindow, login):
         else:
             QMessageBox.warning(self, 'Warning',"User Info Not Exist Please Login")
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ui_file_path = os.path.join(current_dir, 'createaccount.ui')
+create_account_window = uic.loadUiType(ui_file_path)[0]
+
+class SunnyCreateAccountWindow(QMainWindow, create_account_window):
+    def __init__(self, control):
+        super(SunnyCreateAccountWindow, self).__init__()
+        self.setupUi(self)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_file_path = os.path.join(current_dir, 'main.ui')
@@ -373,8 +382,7 @@ class SunnyProfileWindow(QMainWindow, user_profile_window):
 if __name__ == '__main__':
     App = QApplication(sys.argv)
     window_controll = WindowControll()
-    window_controll.showwindow(SunnyLoginWindow)
+    window_controll.showwindow(SunnyCreateAccountWindow)
     sys.exit(App.exec())
 
 
-#------------------
