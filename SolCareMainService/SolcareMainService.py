@@ -15,11 +15,24 @@ import mysql.connector
 import numpy as np
 from datetime import datetime
 
-from ultralytics import YOLO
+import signal
+import sys
 
-print("모델을 불러오는 중입니다...")
-test_thread_flag = True
-diet_model = YOLO("/home/hdk/ws/project/data/train7/weights/best.pt")
+# SolCareGUI 수신 소켓 설정
+host0 = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+port0 = 8083       # 포트 번호
+server_socket0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket0.bind((host0, port0))
+server_socket0.listen()
+userListen_thread_flag = True
+
+# SolCaAIService 송신 소켓 설정
+host1 = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+port1 = 8082       # 포트 번호
+# server_socket0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# server_socket0.bind((host0, port0))
+# server_socket0.listen()
+# userListen_thread_flag = True
 
 remote = mysql.connector.connect(
     host = "database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
@@ -29,6 +42,18 @@ remote = mysql.connector.connect(
     database = "nahonlab"
 )
 cur = remote.cursor()
+
+def signal_handler(signal, frame):
+    global userListen_thread_flag
+    print('You pressed Ctrl+C!')
+    print("Server End Final")
+    userListen_thread_flag = False
+    server_socket0.close()
+    remote.close()
+
+    cv2.waitKey(50)
+    sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
 def recvall(sock, count):
     buf = b''
@@ -47,24 +72,51 @@ def recImage(sock):
     decimg = cv2.imdecode(data, 1)
     return decimg
 
-def test_thread(server_socket, set_time):
-    global test_thread_flag
+#["request000"]
+def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((host1, port1))
+
+    if not iscamera:
+        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+        response = client_socket.recv(1024).decode('utf-8')
+        client_socket.close()
+        return response
+    else:
+        resize_frame = cv2.resize(img, dsize=(640, 640), interpolation=cv2.INTER_AREA)
+
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+        _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
+        data = np.array(imgencode)
+        stringData = base64.b64encode(data)
+        length = str(len(stringData))
+
+        # messages should be ["SendImage"]
+        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+        time.sleep(0.03)
+        client_socket.sendall(length.encode('utf-8').ljust(64))
+        client_socket.send(stringData)
+
+        response = client_socket.recv(1024).decode('utf-8')
+        client_socket.close()
+        return response
+    
+def TCPListenerFromUser(server_socket, set_time):
+    global userListen_thread_flag
     print("hello thread")
 
     cnt = 0
     socketList = [server_socket]
-    while test_thread_flag:
-        cnt += 1
-        print("cnt:", cnt, "/", set_time)
-        if cnt >= set_time:
-            if not set_time == -1:
+    while userListen_thread_flag:
+        
+        if not set_time == -1:
+            cnt += 1
+            print("cnt:", cnt, "/", set_time)
+            if cnt >= set_time:
                 print("end thread by cnt")
-                test_thread_flag = False
+                userListen_thread_flag = False
                 break
 
-        # 클라이언트 연결 대기
-        # print("클라이언트 연결 대기")
-        # client_socket, client_address = socket.accept()
         read_socket, write_socket, error_socket = select.select(socketList, [], [], 1)
         for sock in read_socket :
             if sock == server_socket :
@@ -72,7 +124,6 @@ def test_thread(server_socket, set_time):
                 client_socket, client_address = sock.accept()
                 socketList.append(client_socket)
                 # print("Hello,", client_address)
-
             else :
                 try:
                     response = []
@@ -92,49 +143,19 @@ def test_thread(server_socket, set_time):
                     # print(parts)
 
                     if len(parts) != 0:
-                        if parts[0] == "Hello":
-                            response = []
-                            response.append("Hello, ")
-                            response.append(str(client_address))
-                            response.append("Let's Go")
-                            response.append("Home")
-                        elif parts[0] == "SendImage":
-                            decimg = recImage(sock)
-
-                            response = []
-                            response.append("ACK")
-
-                            cv2.imshow("img",decimg)
-                            # print(decimg.shape)
-                        elif parts[0] == "RequestDietAnalyze":
+                        if parts[0] == "RequestDietAnalyze":
                             print("model 가즈아!!")
                             decimg = recImage(sock)
 
-                            # 식단 predict
-                            results = diet_model(decimg)
-                            obj_lsit = [
-                                "밥", "김치", "빵", "샐러드", "고등어구이", "닭가슴살", "사과", "바나나", "오렌지", "라면", "삼겹살"
-                            ]
-                            amount_lsit = [100 for _ in obj_lsit]
-                            tmp_list = [False for _ in obj_lsit]
+                            # TODO requestTCP(decimg, isImg = True)
 
-                            boxes = results[0].boxes
-                            clss = boxes.cls.cpu().detach().numpy().tolist()
-                            xywhs = boxes.xywh.cpu().detach().numpy().tolist()
-                            # TODO: amount 추정 코드
+                            messages = []
+                            messages.append(str(parts[0]))
+                            response = requestTCP(messages, decimg, iscamera = True)
+                            print(response)
 
-                            response = []
-                            response.append("ACK")
-                            for cls in clss:
-                                tmp_list[int(cls)] = True
+                            sock.send(response.encode('utf-8'))
 
-                            for i, obj in enumerate(obj_lsit):
-                                if tmp_list[i]:
-                                    response.append(obj)
-                                    response.append(str(amount_lsit[i]))
-
-                            plots = results[0].plot()
-                            cv2.imshow("plot", plots)
                         elif parts[0] == "ModifyedDietAnalyze":
                             # "modify&&사과&&170&&바나나&&180"
                             # parts[1] = "사과"
@@ -151,8 +172,6 @@ def test_thread(server_socket, set_time):
                 finally:
                     # 클라이언트 소켓 닫기
                     # print("클라이언트 연결종료")
-                    response = "&&".join(response)
-                    sock.send(response.encode("utf-8"))
                     sock.close()
                     socketList.remove(sock)
 
@@ -162,28 +181,7 @@ def test_thread(server_socket, set_time):
 
 
 if __name__=="__main__":
-    # 서버 설정
-    host0 = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
-    port0 = 8080       # 포트 번호
-    # 서버 소켓 생성
-    server_socket0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket0.bind((host0, port0))
-    server_socket0.listen()
-
-    server_time = 6
-    tcp_controller_thread = threading.Thread(target=test_thread, 
-                                             args=(server_socket0,server_time))
-    tcp_controller_thread.start()
-
-    while True:
-        key = cv2.waitKey(1)
-        if key == ord('q'):
-            print("q 입력 종료")
-            break
-
-        if not test_thread_flag:
-            print("서버 타임 종료")
-            break
-
-    test_thread_flag = False
-    remote.close()
+    userListenTread = threading.Thread(target=TCPListenerFromUser, 
+                                             args=(server_socket0, -1))
+    userListenTread.start()
+    userListenTread.join()
