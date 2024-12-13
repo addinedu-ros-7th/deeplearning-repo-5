@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>922</height>
+    <width>393</width>
+    <height>852</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="btn_camera_shutter">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>720</y>
+     <x>160</x>
+     <y>680</y>
      <width>70</width>
      <height>70</height>
     </rect>
@@ -34,27 +34,11 @@ padding: 5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_background">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>40</y>
-     <width>393</width>
-     <height>852</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: #FAFAFA;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btn_home">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>840</y>
+     <x>60</x>
+     <y>800</y>
      <width>35</width>
      <height>35</height>
     </rect>
@@ -80,73 +64,11 @@ padding: 5px;
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_profile">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>840</y>
-     <width>35</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled>
-      <colorrole role="Button">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </disabled>
-    </palette>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-border-image: url(:/images/img//User.jpg);
-border: 1px solid #2E7D32;
-	image: url(:/images/src/User.jpg);
-border-radius: 5px; 
-padding: 5px;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btn_camera">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>830</y>
+     <x>170</x>
+     <y>790</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -175,8 +97,8 @@ padding: 5px;
   <widget class="QLabel" name="lb_menubar">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>821</y>
+     <x>0</x>
+     <y>781</y>
      <width>393</width>
      <height>71</height>
     </rect>
@@ -196,8 +118,8 @@ border-top-left-radius: 14px;</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
+     <x>0</x>
+     <y>0</y>
      <width>393</width>
      <height>791</height>
     </rect>
@@ -216,8 +138,8 @@ border-top-left-radius: 14px;</string>
   <widget class="QLabel" name="lb_shutter_effect">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
+     <x>0</x>
+     <y>0</y>
      <width>393</width>
      <height>781</height>
     </rect>
@@ -229,8 +151,8 @@ border-top-left-radius: 14px;</string>
   <widget class="QPushButton" name="btn_file">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>760</y>
+     <x>330</x>
+     <y>720</y>
      <width>40</width>
      <height>40</height>
     </rect>
@@ -245,8 +167,8 @@ border-top-left-radius: 14px;</string>
   <widget class="QLabel" name="lb_camera_box">
    <property name="geometry">
     <rect>
-     <x>365</x>
-     <y>754</y>
+     <x>325</x>
+     <y>714</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -259,16 +181,148 @@ border-radius: 10px</string>
     <string/>
    </property>
   </widget>
-  <zorder>lb_background</zorder>
+  <widget class="QLabel" name="lb_DynamicIsland">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>122</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);
+border-radius: 18px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_profile">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>800</y>
+     <width>35</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Base">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="Window">
+       <brush brushstyle="SolidPattern">
+        <color alpha="0">
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+border-image: url(:/images/img//User.png);
+background-color: rgb(255, 255, 255,0);
+border-radius: 5px; 
+padding: 5px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>lb_webcam</zorder>
   <zorder>lb_shutter_effect</zorder>
   <zorder>lb_menubar</zorder>
   <zorder>btn_home</zorder>
-  <zorder>btn_profile</zorder>
   <zorder>btn_camera</zorder>
   <zorder>btn_camera_shutter</zorder>
   <zorder>lb_camera_box</zorder>
   <zorder>btn_file</zorder>
+  <zorder>lb_DynamicIsland</zorder>
+  <zorder>btn_profile</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

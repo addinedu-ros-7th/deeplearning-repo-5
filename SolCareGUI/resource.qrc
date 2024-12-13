@@ -1,11 +1,12 @@
 <RCC>
   <qresource prefix="images">
+    <file>img/User.png</file>
+    <file>img/Back.png</file>
     <file>img/ad_frame.mp4</file>
     <file>img/UserID.png</file>
     <file>img/UserPassword.png</file>
     <file>img/try-this-trainer-approved-chest-day-workout.jpg</file>
     <file>img/VideoStabilization.png</file>
-    <file>img/User.jpg</file>
     <file>img/profile_menu.png</file>
     <file>img/sunny_food_photo2TCP.jpg</file>
     <file>img/profile.jpg</file>

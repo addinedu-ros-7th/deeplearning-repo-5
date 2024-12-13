@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>922</height>
+    <width>393</width>
+    <height>852</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QLabel" name="lb_background">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
+     <x>0</x>
+     <y>0</y>
      <width>393</width>
      <height>852</height>
     </rect>
@@ -32,10 +32,10 @@
   <widget class="QLabel" name="lb_logo">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>80</y>
-     <width>221</width>
-     <height>71</height>
+     <x>90</x>
+     <y>60</y>
+     <width>220</width>
+     <height>70</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -51,12 +51,12 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_user_name">
+  <widget class="QLineEdit" name="le_NewUserID">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>230</y>
-     <width>260</width>
+     <x>40</x>
+     <y>190</y>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
@@ -66,27 +66,12 @@ color: rgb(107, 107, 107);
 border-radius: 15px</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_sex">
+  <widget class="QComboBox" name="cb_NewUserSex">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>330</y>
-     <width>260</width>
-     <height>40</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: #E5E5E5;
-color: rgb(107, 107, 107);
-border-radius: 15px</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cb_sex">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>330</y>
-     <width>260</width>
+     <x>40</x>
+     <y>420</y>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
@@ -111,12 +96,12 @@ border-radius: 15px</string>
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QDateEdit" name="dateEdit">
+  <widget class="QDateEdit" name="de_NewUserBirthday">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>430</y>
-     <width>260</width>
+     <x>40</x>
+     <y>490</y>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
@@ -142,12 +127,12 @@ color: rgb(0, 0, 0);</string>
     <enum>QAbstractSpinBox::NoButtons</enum>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_user_phone">
+  <widget class="QLineEdit" name="le_NewUserPhone">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>530</y>
-     <width>260</width>
+     <x>40</x>
+     <y>560</y>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
@@ -160,12 +145,12 @@ border-radius: 15px</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_user_emer_phone">
+  <widget class="QLineEdit" name="le_NewUserEmerPhone">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>40</x>
      <y>630</y>
-     <width>260</width>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
@@ -184,8 +169,8 @@ border-radius: 15px</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>200</y>
+     <x>60</x>
+     <y>170</y>
      <width>60</width>
      <height>16</height>
     </rect>
@@ -195,14 +180,14 @@ border-radius: 15px</string>
 </string>
    </property>
    <property name="text">
-    <string>이름</string>
+    <string>ID</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>300</y>
+     <x>60</x>
+     <y>400</y>
      <width>60</width>
      <height>16</height>
     </rect>
@@ -218,8 +203,8 @@ border-radius: 15px</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>400</y>
+     <x>60</x>
+     <y>470</y>
      <width>60</width>
      <height>16</height>
     </rect>
@@ -235,8 +220,8 @@ border-radius: 15px</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>500</y>
+     <x>60</x>
+     <y>540</y>
      <width>60</width>
      <height>16</height>
     </rect>
@@ -252,8 +237,8 @@ border-radius: 15px</string>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>600</y>
+     <x>60</x>
+     <y>610</y>
      <width>60</width>
      <height>16</height>
     </rect>
@@ -264,6 +249,127 @@ border-radius: 15px</string>
    </property>
    <property name="text">
     <string>비상연락 </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_create">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>730</y>
+     <width>290</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(173, 247, 242, 255), stop:1 rgba(21, 170, 255, 255));
+color: black;              
+border-radius: 10px; 
+padding: 5px;
+</string>
+   </property>
+   <property name="text">
+    <string>CREATE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_cancle">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>780</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255,0);
+color: rgb(107, 107, 107);
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>CANCLE</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>240</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>비밀번호</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_NewUserPassword">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>260</y>
+     <width>310</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_NewUserName">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>350</y>
+     <width>310</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>330</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>이름</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_DynamicIsland">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>122</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);
+border-radius: 18px</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

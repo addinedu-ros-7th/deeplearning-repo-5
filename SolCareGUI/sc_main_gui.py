@@ -14,11 +14,11 @@ import base64
 import cv2
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
-
+import hashlib
+import mysql.connector
 
 server_address = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
 server_port = 8080  # 포트 번호
-
 def recvall(sock, count):
     buf = b''
     while count:
@@ -27,7 +27,6 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
-
 #["request000"]
 def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -57,7 +56,15 @@ def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
         client_socket.close()
         return response
 
-class WindowControll:
+current_dir = os.path.dirname(os.path.abspath(__file__))
+login = uic.loadUiType(os.path.join(current_dir, 'login.ui'))[0]
+profile = uic.loadUiType(os.path.join(current_dir, 'profile.ui'))[0]
+createaccount = uic.loadUiType(os.path.join(current_dir, 'createaccount.ui'))[0]
+main = uic.loadUiType(os.path.join(current_dir, 'main.ui'))[0]
+food_camera = uic.loadUiType(os.path.join(current_dir, 'food_camera.ui'))[0]
+analytics = uic.loadUiType(os.path.join(current_dir, 'analytics.ui'))[0]
+security = uic.loadUiType(os.path.join(current_dir, 'analytics.ui'))[0]
+class ControlTower:
     def __init__(self):
         self.current_window = None  
     def showwindow(self, windowtoopen):
@@ -66,35 +73,58 @@ class WindowControll:
         
         self.current_window = windowtoopen(self)
         self.current_window.show()
-    # def ProfileWindow(self, windowtoopen):
-    
-    # def FoodCameraWindow(self, windowtoopen):
-    
-    # def 
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'login.ui')
-login = uic.loadUiType(ui_file_path)[0]
 
 class SunnyLoginWindow(QMainWindow, login):
     def __init__(self, control):
         super(SunnyLoginWindow, self).__init__()
+        self.control = control
         self.setupUi(self)
 
         self.lb_logo.setStyleSheet("""
                             QLabel {
-                                border-image: url('img/logo.jpg');
+                                border-image: url('SolCareGUI/img/logo.jpg');
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 border: none; 
                             }
                         """)
 
-        self.le_UserID.addAction(QIcon('img/UserID.png'), QLineEdit.ActionPosition.LeadingPosition)
-        self.le_UserPassword.addAction(QIcon('img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
+        self.le_UserID.addAction(QIcon('SolCareGUI/img/UserID.png'), QLineEdit.ActionPosition.LeadingPosition)
+        self.le_UserPassword.addAction(QIcon('SolCareGUI/img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
 
 
         self.btn_login.clicked.connect(self.SendUserInfo)
+        self.btn_create.clicked.connect(lambda: self.control.showwindow(SunnyCreateAccountWindow))
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 동균님에게 전달
+    def CheckUserInfo(self, user_info):
+        db = mysql.connector.connect(
+            host="database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
+            user="ks",
+            password="1234",
+            database="nahonlab"
+        )
+        input_username = user_info[0]
+        input_password = user_info[1]
+        password_hash = hashlib.sha256(input_password.encode("utf-8")).hexdigest()
+        print(password_hash)
+
+        cursor = db.cursor()
+        query = """
+        SELECT nickname, pw FROM user_signup
+        WHERE nickname = %s AND pw = %s
+        """
+        cursor.execute(query, (input_username, password_hash))
+
+        # Fetch results
+        result = cursor.fetchone()
+
+        if result:
+            return True # or 0 send TCP
+        else:
+            return False # or 1send TCP
+
+        cursor.close()
+        db.close()
 
     def SendUserInfo(self):
         user_info = []
@@ -104,73 +134,158 @@ class SunnyLoginWindow(QMainWindow, login):
         user_info.append(user_password)
 
         print(user_info)
+        
+        access_result = self.CheckUserInfo(user_info)
 
         # requestTCP(user_id) # send User ID 
         # requestTCP(user_password) # send User PW
 
-        messeage = ["Exist"]
-        if messeage != "Not Exist":
+        if access_result == True:
             QMessageBox.warning(self, 'Log In Success',"Log In Success")
-            
+            self.control.showwindow(SunnyMainWindow)
         else:
-            QMessageBox.warning(self, 'Warning',"User Info Not Exist Please Login")
+            QMessageBox.warning(self, 'Warning',"User Info Not Exist Please SIGH UP!!!")
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'createaccount.ui')
-create_account_window = uic.loadUiType(ui_file_path)[0]
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class SunnyCreateAccountWindow(QMainWindow, create_account_window):
+class SunnyCreateAccountWindow(QMainWindow, createaccount):
     def __init__(self, control):
         super(SunnyCreateAccountWindow, self).__init__()
+        self.control = control
         self.setupUi(self)
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'main.ui')
-main = uic.loadUiType(ui_file_path)[0]
-
-class SunnyMainWindow(QMainWindow, main):
-    def __init__(self):
-        super(SunnyMainWindow, self).__init__()
-        self.cap = None
-        self.setupUi(self)
-
-        # Navigation bar Design Setup
-        self.btn_home.setStyleSheet("""
-                            QPushButton {
-                                border-image: url('img/home.png');
+        self.lb_logo.setStyleSheet("""
+                            QLabel {
+                                border-image: url('SolCareGUI/img/logo.jpg');
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 border: none; 
                             }
                         """)
+        self.le_NewUserID.addAction(QIcon('SolCareGUI/img/UserID.png'), QLineEdit.ActionPosition.LeadingPosition)
+        self.le_NewUserPassword.addAction(QIcon('SolCareGUI/img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
+
+        self.btn_create.clicked.connect(self.RegisterUser)
+        self.btn_cancle.clicked.connect(lambda: self.control.showwindow(SunnyLoginWindow))
+        self.cb_NewUserSex.addItems(['남자', '여자'])
+
+    def RegisterUser(self):
+        user_login_info = []
+        new_user_info = []
+
+        new_user_id = self.le_NewUserID.text()
+        new_user_password = self.le_NewUserPassword.text()
+        new_user_password_hashed = hashlib.sha256(new_user_password.encode("utf-8")).hexdigest()
+
+        user_login_info.append(new_user_id)
+        user_login_info.append(new_user_password_hashed)
+        
+        new_user_name = self.le_NewUserName.text()
+        new_user_sex = self.cb_NewUserSex.currentText()
+        new_user_birthday = self.de_NewUserBirthday.text()
+        new_user_phone = self.le_NewUserPhone.text()
+        new_user_emer_phone = self.le_NewUserEmerPhone.text()
+
+        new_user_info.append(new_user_name)
+        new_user_info.append(new_user_sex)
+        new_user_info.append(new_user_birthday)
+        new_user_info.append(new_user_phone)
+        new_user_info.append(new_user_emer_phone)
+
+        db = mysql.connector.connect(
+            host="database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
+            user="ks",
+            password="1234",
+            database="nahonlab"
+        )
+        cursor = db.cursor()
+        
+        query = "SELECT nickname FROM user_signup WHERE nickname = %s"
+        cursor.execute(query, (user_login_info[0],))
+        
+        result = cursor.fetchone()   
+
+        if result:
+            nickname_status =  False  # 있으면 안됨
+        else:
+            nickname_status = True
+
+        if nickname_status == True:
+            insert_signup_query = """
+            INSERT INTO user_signup (nickname, pw)
+            VALUES (%s, %s)
+            """
+            cursor.execute(insert_signup_query, (user_login_info[0], user_login_info[1]))
+
+            user_id = cursor.lastrowid
+
+            insert_user_info_query = """
+            INSERT INTO user_info ( name, sex, birthday, phone, emergency_contact)
+            VALUES ( %s, %s, %s, %s, %s)
+            """
+            cursor.execute(insert_user_info_query, ( new_user_info[0], new_user_info[1], new_user_info[2], new_user_info[3], new_user_info[4]))
+
+            db.commit() 
+            cursor.close() 
+            db.close()  
+        else:
+            QMessageBox.warning(self, 'Warning',"Please Use Different ID")
+
+
+        # requestTCP(user_id) # send User ID 
+
+
+
+    
+    def RegisterDB(self):
+        nickname_available = self.CheckNickname(self.user_login_info)
+
+
+
+
+class SunnyMainWindow(QMainWindow, main):
+    def __init__(self, control):
+        super(SunnyMainWindow, self).__init__()
+        self.control = control
+        self.cap = None
+        self.setupUi(self)
+
+        # Navigation bar Design Setup
+        self.btn_home.setStyleSheet("""
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/home.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_camera.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('img/VideoStabilization.png');
-                                        background-repeat: no-repeat;
-                                        background-position: center;
-                                        border: none; 
-                                    }
-                                """)
+                                        border-image: url(SolCareGUI/img/VideoStabilization.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_profile.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('img/User.jpg');
-                                        background-repeat: no-repeat;
-                                        background-position: center;
-                                        border: none; 
-                                    }
-                                """)
-
-        self.lb_logo.setStyleSheet("""
-                    QLabel {
-                        border-image: url('img/logo.jpg');
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        border: none; 
-                    }
+                                        border-image: url(SolCareGUI/img/User.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
+        
+        self.lb_webcam.setStyleSheet("""
+                QLabel {
+                    border-radius: 15px
+                }
                 """)
-
         # Ad video
-        self.cap = cv2.VideoCapture(os.path.join(current_dir, 'img/ad_frame.mp4'))
+        self.cap = cv2.VideoCapture('SolCareGUI/img/ad_frame.mp4')
         self.ad_timer = QTimer()
         self.ad_timer.start(30)  #No trigger, JUST PLAY !!
         self.ad_timer.timeout.connect(self.ad_frame)  # ㅊall update_frame function every time when timer is expired
@@ -184,8 +299,9 @@ class SunnyMainWindow(QMainWindow, main):
         self.btn_weighlifting.clicked.connect(self.start_webcam)
 
         #Page Move
-        self.btn_camera.clicked.connect(self.go2food_camera)
-        self.btn_profile.clicked.connect(self.go2profile)
+        self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
+        self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
+        self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
 
 
         self.is_cardio_activate = False
@@ -193,7 +309,10 @@ class SunnyMainWindow(QMainWindow, main):
         # self.is_profile_activate = False
 
     def start_webcam(self):
-        self.cap = cv2.VideoCapture(0)
+
+        mobilecamIP = "http://192.168.0.14/video"
+
+        self.cap = cv2.VideoCapture(mobilecamIP)
         self.webcam_timer.start(30)
 
     def update_webcam_frame(self):
@@ -233,72 +352,70 @@ class SunnyMainWindow(QMainWindow, main):
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
         QTimer.singleShot(15000, self.ad_frame)
 
-    def go2food_camera(self):
-        self.food_camera_window = SunnyFoodCameraWindow()
-        self.food_camera_window.show()
-    def go2profile(self):
-        self.profile_window = SunnyProfileWindow()
-        self.profile_window.show()
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'food_camera.ui')
-food_camera_window = uic.loadUiType(ui_file_path)[0]
-
-class SunnyFoodCameraWindow(QMainWindow, food_camera_window):
-    def __init__(self):
+class SunnyFoodCameraWindow(QMainWindow, food_camera):
+    def __init__(self, control):
         super(SunnyFoodCameraWindow, self).__init__()
+        self.control = control
         self.cap = None
         self.setupUi(self)
         # Navigation bar Design Setup
         self.btn_home.setStyleSheet("""
-                    QPushButton {
-                        border-image: url('img/home.png');
-                        background-repeat: no-repeat;
-                        background-position: center;
-                        border: none; 
-                    }
-                """)
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/home.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_camera.setStyleSheet("""
-                            QPushButton {
-                                border-image: url('img/VideoStabilization.png');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                border: none; 
-                            }
-                        """)
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/VideoStabilization.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_profile.setStyleSheet("""
-                            QPushButton {
-                                border-image: url('img/User.jpg');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                border: none; 
-                            }
-                        """)
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/User.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
+        
         self.btn_camera_shutter.setStyleSheet("""
                             QPushButton {
-                                border-image: url('img/Aperture.jpg');
+                                border-image: url('SolCareGUI/img/Aperture.jpg');
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 border: none; 
                             }
                         """)
-
         self.btn_file.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('img/Add_image.png');
+                                        border-image: url('SolCareGUI/img/Add_image.png');
                                         background-repeat: no-repeat;
                                         background-position: center;
                                         border: none; 
                                     }
                                 """)
-        # self.btn_home.clicked.connect(self.Go2Home)
+        
+        mobilecamIP = 0
+        self.cap = cv2.VideoCapture(mobilecamIP)
 
-        self.cap = cv2.VideoCapture(0)
         self.webcam_timer = QTimer()
         self.webcam_timer.start(30)
         self.webcam_timer.timeout.connect(self.webcam_frame)  # ㅊall update_frame function every time when timer is expired
 
         self.btn_camera_shutter.clicked.connect(self.take_photo)
+
+        self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
+        self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
+        self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
 
 
     def webcam_frame(self):
@@ -325,64 +442,121 @@ class SunnyFoodCameraWindow(QMainWindow, food_camera_window):
         re=requestTCP(messages, img=self.current_frame, iscamera=True)
         print(re)
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-ui_file_path = os.path.join(current_dir, 'profile.ui')
-user_profile_window = uic.loadUiType(ui_file_path)[0]
-
-class SunnyProfileWindow(QMainWindow, user_profile_window):
-    def __init__(self):
+class SunnyProfileWindow(QMainWindow, profile):
+    def __init__(self, control):
         super(SunnyProfileWindow, self).__init__()
+        self.control = control
         self.cap = None
         self.setupUi(self)
 
         # Navigation bar Design Setup
         self.btn_home.setStyleSheet("""
-                            QPushButton {
-                                border-image: url('img/home.png');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                border: none; 
-                            }
-                        """)
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/home.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_camera.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('img/VideoStabilization.png');
-                                        background-repeat: no-repeat;
-                                        background-position: center;
-                                        border: none; 
-                                    }
-                                """)
+                                        border-image: url(SolCareGUI/img/VideoStabilization.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
         self.btn_profile.setStyleSheet("""
                                     QPushButton {
-                                        border-image: url('img/User.jpg');
-                                        background-repeat: no-repeat;
-                                        background-position: center;
-                                        border: none; 
-                                    }
-                                """)
-
-        self.lb_logo.setStyleSheet("""
-                            QLabel {
-                                border-image: url('img/logo.jpg');
-                                background-repeat: no-repeat;
-                                background-position: center;
-                                border: none; 
-                            }
-                        """)
+                                        border-image: url(SolCareGUI/img/User.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
+        
         self.lb_menu.setStyleSheet("""
                             QLabel {
-                                border-image: url('img/profile_menu.png');
+                                border-image: url('SolCareGUI/img/profile_menu.png');
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 border: none; 
                             }
                         """)
+        
+        self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
+        self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
+        self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
+
+
+        self.btn_MY.clicked.connect(lambda: self.control.showwindow(SunnyAnalyticsWindow))
+        self.btn_security.clicked.connect(lambda: self.control.showwindow(SunnySecurityWindow))
+
+class SunnyAnalyticsWindow(QMainWindow, analytics):
+    def __init__(self, control):
+        super(SunnyAnalyticsWindow, self).__init__()
+        self.control = control
+        self.setupUi(self)  
+
+        self.btn_back.setStyleSheet("""
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/Back.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
+        
+        self.btn_back.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
+
+class SunnySecurityWindow(QMainWindow, security):
+    def __init__(self, control):
+        super(SunnySecurityWindow, self).__init__()
+        self.control = control
+        self.cap = None
+        self.setupUi(self)
+        # Navigation bar Design Setup
+        self.btn_back.setStyleSheet("""
+                                    QPushButton {
+                                        border-image: url(SolCareGUI/img/Back.png);
+                                        background-color: rgb(255, 255, 255,0);
+                                        border: 1px solid #2E7D32;
+                                        border-radius: 5px; 
+                                        padding: 5px;
+                                        }
+                                    """)
+        
+        mobilecamIP = 0
+        self.cap = cv2.VideoCapture(mobilecamIP)
+
+        self.webcam_timer = QTimer()
+        self.webcam_timer.start(30)
+        self.webcam_timer.timeout.connect(self.webcam_frame)  # ㅊall update_frame function every time when timer is expired
+
+
+    def webcam_frame(self):
+        self.is_webcam_activate = True
+        ret, frame = self.cap.read()
+        frame = cv2.resize(frame, (393, 781))
+        self.current_frame = frame
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            h, w, ch = frame.shape
+            bytes_per_line = ch * w
+            qt_image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+
+            self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
+
 
 
 if __name__ == '__main__':
     App = QApplication(sys.argv)
-    window_controll = WindowControll()
-    window_controll.showwindow(SunnyCreateAccountWindow)
+    window_controll = ControlTower()
+    window_controll.showwindow(SunnyLoginWindow)
     sys.exit(App.exec())
 
 
