@@ -17,6 +17,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 import hashlib
 import mysql.connector
 
+Current_User_ID = 0
+
 def recvall(sock, count):
     buf = b''
     while count:
@@ -33,6 +35,8 @@ AI_PORT = 8081       # 포트 번호
 
 AI_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 AI_client_socket.connect((AI_ADDR, AI_PORT))
+
+webcam_request_cnt = 0
 
 # Main Server
 MAIN_SERVER = 0
@@ -112,6 +116,8 @@ main = uic.loadUiType(os.path.join(current_dir, 'main.ui'))[0]
 food_camera = uic.loadUiType(os.path.join(current_dir, 'food_camera.ui'))[0]
 analytics = uic.loadUiType(os.path.join(current_dir, 'analytics.ui'))[0]
 security = uic.loadUiType(os.path.join(current_dir, 'security.ui'))[0]
+analytics1 = uic.loadUiType(os.path.join(current_dir, 'analytics1.ui'))[0]
+
 class ControlTower:
     def __init__(self):
         self.current_window = None  
@@ -158,7 +164,7 @@ class SunnyLoginWindow(QMainWindow, login):
 
         cursor = db.cursor()
         query = """
-        SELECT nickname, pw FROM user_signup
+        SELECT user_id, nickname, pw FROM user_signup
         WHERE nickname = %s AND pw = %s
         """
         cursor.execute(query, (input_username, password_hash))
@@ -167,6 +173,7 @@ class SunnyLoginWindow(QMainWindow, login):
         result = cursor.fetchone()
 
         if result:
+            Current_User_ID = result[0]
             return True # or 0 send TCP
         else:
             return False # or 1send TCP
@@ -364,6 +371,8 @@ class SunnyMainWindow(QMainWindow, main):
         self.webcam_timer.start(33)
 
     def update_webcam_frame(self):
+        global webcam_request_cnt
+
         self.is_webcam_activate = True
 
         ret, frame = self.cap.read()
@@ -376,10 +385,13 @@ class SunnyMainWindow(QMainWindow, main):
 
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
 
-            messages = ["RequestExResult"]
-            re=requestTCP(messages, img=frame, iscamera=True, reciver=AI_SERVER)
-            print(re)
-
+            webcam_request_cnt += 1
+            if webcam_request_cnt >= 33:
+                messages = ["RequestExResult"]
+                re=requestTCP(messages, img=frame, iscamera=True, reciver=AI_SERVER)
+                print(re)
+                webcam_request_cnt = 0
+            
     def closeEvent(self, event):
         self.cap.release()
         self.timer.stop()
@@ -545,8 +557,8 @@ class SunnyProfileWindow(QMainWindow, profile):
                                 border-radius: 5px; 
                                 padding: 5px;
                                 }
-                            """)
-
+                            """)         
+        
         self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
         self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
         self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
@@ -561,6 +573,10 @@ class SunnyAnalyticsWindow(QMainWindow, analytics):
         self.control = control
         self.setupUi(self)  
 
+        self.User_Name = self.GetCurrentUser_Name(Current_User_ID)
+
+        self.lb_User_Name.text(f"{self.User_Name}님 분석")
+
         self.btn_back.setStyleSheet("""
                                     QPushButton {
                                         border-image: url(SolCareGUI/img/Back.png);
@@ -572,6 +588,24 @@ class SunnyAnalyticsWindow(QMainWindow, analytics):
                                     """)
         
         self.btn_back.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
+
+    def GetCurrentUser_Name(self, Current_User_ID):
+        db = mysql.connector.connect(
+        host="database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
+        user="ks",
+        password="1234",
+        database="nahonlab"
+        )
+        cursor = db.cursor()
+        query = """
+        SELECT name
+        FROM user_info
+        WHERE user_id = %s
+        """
+        cursor.execute(query, (Current_User_ID,))
+        user_name = cursor.fetchone()
+        return user_name
+    
 
 class SunnySecurityWindow(QMainWindow, security):
     def __init__(self, control):
