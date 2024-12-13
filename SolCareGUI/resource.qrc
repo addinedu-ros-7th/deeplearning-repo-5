@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="images">
+    <file>img/Siren.png</file>
+    <file>img/PTZ Camera.png</file>
     <file>img/User.png</file>
     <file>img/Back.png</file>
     <file>img/ad_frame.mp4</file>

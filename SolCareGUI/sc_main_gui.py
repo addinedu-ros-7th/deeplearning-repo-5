@@ -17,8 +17,6 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 import hashlib
 import mysql.connector
 
-server_address = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
-server_port = 8080  # 포트 번호
 def recvall(sock, count):
     buf = b''
     while count:
@@ -27,34 +25,84 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
-#["request000"]
-def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((server_address, server_port))
 
+# AI Server
+AI_SERVER = 1
+AI_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+AI_PORT = 8081       # 포트 번호
+
+AI_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+AI_client_socket.connect((AI_ADDR, AI_PORT))
+
+# Main Server
+MAIN_SERVER = 0
+MAIN_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+MAIN_PORT = 8083       # 포트 번호
+
+def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
+    print("test1")
+    if reciver == MAIN_SERVER:
+        addr = MAIN_ADDR
+        port = MAIN_PORT
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((addr, port))
+
+    elif reciver == AI_SERVER:
+        addr = MAIN_ADDR
+        port = MAIN_PORT
+        client_socket = AI_client_socket
+    print("test2")
     if not iscamera:
         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-        response = client_socket.recv(1024).decode('utf-8')
-        client_socket.close()
-        return response
     else:
-        resize_frame = cv2.resize(img, dsize=(640, 640), interpolation=cv2.INTER_AREA)
-
+        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+        print("hdk")
+        resize_frame = cv2.resize(img, dsize=(160, 160), interpolation=cv2.INTER_AREA)
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
         _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
         data = np.array(imgencode)
         stringData = base64.b64encode(data)
         length = str(len(stringData))
+        # messages should be ["SendImage"]
+        time.sleep(0.03)
+        client_socket.sendall(length.encode('utf-8').ljust(64))
+        client_socket.send(stringData)
+    print("test3")
+    response = client_socket.recv(1024).decode('utf-8')
+    print("test4")
+    if reciver == MAIN_SERVER:
+        client_socket.close()
+    return response
 
+def sendTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
+    if reciver == MAIN_SERVER:
+        addr = MAIN_ADDR
+        port = MAIN_PORT
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((addr, port))
+
+    elif reciver == AI_SERVER:
+        addr = MAIN_ADDR
+        port = MAIN_PORT
+        client_socket = AI_client_socket
+
+    if not iscamera:
+        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+    else:
+        resize_frame = cv2.resize(img, dsize=(160, 160), interpolation=cv2.INTER_AREA)
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+        _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
+        data = np.array(imgencode)
+        stringData = base64.b64encode(data)
+        length = str(len(stringData))
         # messages should be ["SendImage"]
         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
         time.sleep(0.03)
         client_socket.sendall(length.encode('utf-8').ljust(64))
         client_socket.send(stringData)
 
-        response = client_socket.recv(1024).decode('utf-8')
+    if reciver == MAIN_SERVER:
         client_socket.close()
-        return response
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 login = uic.loadUiType(os.path.join(current_dir, 'login.ui'))[0]
@@ -63,7 +111,7 @@ createaccount = uic.loadUiType(os.path.join(current_dir, 'createaccount.ui'))[0]
 main = uic.loadUiType(os.path.join(current_dir, 'main.ui'))[0]
 food_camera = uic.loadUiType(os.path.join(current_dir, 'food_camera.ui'))[0]
 analytics = uic.loadUiType(os.path.join(current_dir, 'analytics.ui'))[0]
-security = uic.loadUiType(os.path.join(current_dir, 'analytics.ui'))[0]
+security = uic.loadUiType(os.path.join(current_dir, 'security.ui'))[0]
 class ControlTower:
     def __init__(self):
         self.current_window = None  
@@ -310,10 +358,10 @@ class SunnyMainWindow(QMainWindow, main):
 
     def start_webcam(self):
 
-        mobilecamIP = "http://192.168.0.14/video"
+        mobilecamIP = 0
 
         self.cap = cv2.VideoCapture(mobilecamIP)
-        self.webcam_timer.start(30)
+        self.webcam_timer.start(33)
 
     def update_webcam_frame(self):
         self.is_webcam_activate = True
@@ -327,6 +375,10 @@ class SunnyMainWindow(QMainWindow, main):
             qt_image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
+
+            messages = ["RequestExResult"]
+            re=requestTCP(messages, img=frame, iscamera=True, reciver=AI_SERVER)
+            print(re)
 
     def closeEvent(self, event):
         self.cap.release()
@@ -408,7 +460,7 @@ class SunnyFoodCameraWindow(QMainWindow, food_camera):
         self.cap = cv2.VideoCapture(mobilecamIP)
 
         self.webcam_timer = QTimer()
-        self.webcam_timer.start(30)
+        self.webcam_timer.start(33)
         self.webcam_timer.timeout.connect(self.webcam_frame)  # ㅊall update_frame function every time when timer is expired
 
         self.btn_camera_shutter.clicked.connect(self.take_photo)
@@ -437,8 +489,7 @@ class SunnyFoodCameraWindow(QMainWindow, food_camera):
 
         # cv2.imwrite('sunny_food_photo2TCP.jpg', self.current_frame) # 저장 필요없음? MongoDB 사용
 
-        messages = []
-        messages.append("RequestDietAnalyze")
+        messages = ["RequestDietAnalyze"]
         re=requestTCP(messages, img=self.current_frame, iscamera=True)
         print(re)
 
@@ -487,6 +538,15 @@ class SunnyProfileWindow(QMainWindow, profile):
                             }
                         """)
         
+        self.btn_security.setStyleSheet("""
+                            QPushButton {
+                                border-image: url(SolCareGUI/img/Siren.png);
+                                border: 1px solid #2E7D32;
+                                border-radius: 5px; 
+                                padding: 5px;
+                                }
+                            """)
+
         self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
         self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
         self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
@@ -530,11 +590,14 @@ class SunnySecurityWindow(QMainWindow, security):
                                         }
                                     """)
         
+        self.btn_back.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
+
+        
         mobilecamIP = 0
         self.cap = cv2.VideoCapture(mobilecamIP)
 
         self.webcam_timer = QTimer()
-        self.webcam_timer.start(30)
+        self.webcam_timer.start(33)
         self.webcam_timer.timeout.connect(self.webcam_frame)  # ㅊall update_frame function every time when timer is expired
 
 
