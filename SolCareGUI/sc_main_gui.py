@@ -15,6 +15,7 @@ import cv2
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 import hashlib
+import select
 import mysql.connector
 
 Current_User_ID = 0
@@ -28,85 +29,84 @@ def recvall(sock, count):
         count -= len(newbuf)
     return buf
 
-# AI Server
-AI_SERVER = 1
-AI_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
-AI_PORT = 8081       # 포트 번호
+# # AI Server
+# AI_SERVER = 1
+# AI_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+# AI_PORT = 8081       # 포트 번호
 
-AI_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-AI_client_socket.connect((AI_ADDR, AI_PORT))
+# AI_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# AI_client_socket.connect((AI_ADDR, AI_PORT))
 
-webcam_request_cnt = 0
+# webcam_request_cnt = 0
 
-# Main Server
-MAIN_SERVER = 0
-MAIN_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
-MAIN_PORT = 8083       # 포트 번호
+# # Main Server
+# MAIN_SERVER = 0
+# MAIN_ADDR = "192.168.0.48"  # 서버의 IP 주소 또는 도메인 이름
+# MAIN_PORT = 8083       # 포트 번호
+# def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
+#     if reciver == MAIN_SERVER:
+#         addr = MAIN_ADDR
+#         port = MAIN_PORT
+#         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         client_socket.connect((addr, port))
 
-def requestTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
-    print("test1")
-    if reciver == MAIN_SERVER:
-        addr = MAIN_ADDR
-        port = MAIN_PORT
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((addr, port))
+#     elif reciver == AI_SERVER:
+#         addr = MAIN_ADDR
+#         port = MAIN_PORT
+#         client_socket = AI_client_socket
 
-    elif reciver == AI_SERVER:
-        addr = MAIN_ADDR
-        port = MAIN_PORT
-        client_socket = AI_client_socket
-    print("test2")
-    if not iscamera:
-        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-    else:
-        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-        print("hdk")
-        resize_frame = cv2.resize(img, dsize=(160, 160), interpolation=cv2.INTER_AREA)
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-        _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
-        data = np.array(imgencode)
-        stringData = base64.b64encode(data)
-        length = str(len(stringData))
-        # messages should be ["SendImage"]
-        time.sleep(0.03)
-        client_socket.sendall(length.encode('utf-8').ljust(64))
-        client_socket.send(stringData)
-    print("test3")
-    response = client_socket.recv(1024).decode('utf-8')
-    print("test4")
-    if reciver == MAIN_SERVER:
-        client_socket.close()
-    return response
+#     if not iscamera:
+#         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+#     else:
+#         resize_frame = cv2.resize(img, dsize=(320, 320), interpolation=cv2.INTER_AREA)
+#         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+#         _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
+#         data = np.array(imgencode)
+#         stringData = base64.b64encode(data)
+#         length = str(len(stringData))
+#         # messages should be ["SendImage"]
+#         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+#         time.sleep(0.03)
+#         client_socket.sendall(length.encode('utf-8').ljust(64))
+#         client_socket.send(stringData)
 
-def sendTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
-    if reciver == MAIN_SERVER:
-        addr = MAIN_ADDR
-        port = MAIN_PORT
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((addr, port))
+#     ready = select.select([client_socket], [], [], 2)
+#     response = "Error"
+#     if ready[0]:
+#         response = client_socket.recv(1024).decode('utf-8')
+#         if reciver == MAIN_SERVER:
+#             client_socket.close()
+#     return response
 
-    elif reciver == AI_SERVER:
-        addr = MAIN_ADDR
-        port = MAIN_PORT
-        client_socket = AI_client_socket
+# def sendTCP(messages, img=np.zeros((28, 28, 3)), iscamera=False, reciver=MAIN_SERVER):
+#     if reciver == MAIN_SERVER:
+#         addr = MAIN_ADDR
+#         port = MAIN_PORT
+#         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         client_socket.connect((addr, port))
 
-    if not iscamera:
-        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-    else:
-        resize_frame = cv2.resize(img, dsize=(160, 160), interpolation=cv2.INTER_AREA)
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-        _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
-        data = np.array(imgencode)
-        stringData = base64.b64encode(data)
-        length = str(len(stringData))
-        # messages should be ["SendImage"]
-        client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
-        time.sleep(0.03)
-        client_socket.sendall(length.encode('utf-8').ljust(64))
-        client_socket.send(stringData)
+#     elif reciver == AI_SERVER:
+#         addr = MAIN_ADDR
+#         port = MAIN_PORT
+#         client_socket = AI_client_socket
 
-    if reciver == MAIN_SERVER:
-        client_socket.close()
+#     if not iscamera:
+#         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+#     else:
+#         resize_frame = cv2.resize(img, dsize=(320, 320), interpolation=cv2.INTER_AREA)
+#         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+#         _, imgencode = cv2.imencode('.jpg', resize_frame, encode_param)
+#         data = np.array(imgencode)
+#         stringData = base64.b64encode(data)
+#         length = str(len(stringData))
+#         # messages should be ["SendImage"]
+#         client_socket.send(f"{'&&'.join(messages)}".encode('utf-8'))
+#         time.sleep(0.03)
+#         client_socket.sendall(length.encode('utf-8').ljust(64))
+#         client_socket.send(stringData)
+
+#     if reciver == MAIN_SERVER:
+#         client_socket.close()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 login = uic.loadUiType(os.path.join(current_dir, 'login.ui'))[0]
@@ -147,10 +147,13 @@ class SunnyLoginWindow(QMainWindow, login):
         self.le_UserPassword.addAction(QIcon('SolCareGUI/img/UserPassword.png'), QLineEdit.ActionPosition.LeadingPosition)
 
 
-        self.btn_login.clicked.connect(self.SendUserInfo)
+        # self.btn_login.clicked.connect(self.SendUserInfo)
+        self.btn_login.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
+
         self.btn_create.clicked.connect(lambda: self.control.showwindow(SunnyCreateAccountWindow))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 동균님에게 전달
     def CheckUserInfo(self, user_info):
+        global Current_User_ID
         db = mysql.connector.connect(
             host="database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
             user="ks",
@@ -169,11 +172,11 @@ class SunnyLoginWindow(QMainWindow, login):
         """
         cursor.execute(query, (input_username, password_hash))
 
-        # Fetch results
         result = cursor.fetchone()
 
         if result:
             Current_User_ID = result[0]
+            print(Current_User_ID)
             return True # or 0 send TCP
         else:
             return False # or 1send TCP
@@ -200,8 +203,6 @@ class SunnyLoginWindow(QMainWindow, login):
             self.control.showwindow(SunnyMainWindow)
         else:
             QMessageBox.warning(self, 'Warning',"User Info Not Exist Please SIGH UP!!!")
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class SunnyCreateAccountWindow(QMainWindow, createaccount):
     def __init__(self, control):
@@ -295,9 +296,6 @@ class SunnyCreateAccountWindow(QMainWindow, createaccount):
     def RegisterDB(self):
         nickname_available = self.CheckNickname(self.user_login_info)
 
-
-
-
 class SunnyMainWindow(QMainWindow, main):
     def __init__(self, control):
         super(SunnyMainWindow, self).__init__()
@@ -347,14 +345,18 @@ class SunnyMainWindow(QMainWindow, main):
 
 
         # auto function to run when button clicked (timeout!!)
-        self.webcam_timer = QTimer()
-        self.webcam_timer.timeout.connect(self.update_webcam_frame)  # ㅊall update_frame function every time when timer is expired
+        self.webcam_gui_timer = QTimer()
+        self.webcam_gui_timer.timeout.connect(self.update_webcam_frame_gui)  # ㅊall update_frame function every time when timer is expired
+
+        self.webcam_tcp_timer = QTimer()
+        # self.webcam_tcp_timer.timeout.connect(self.send_webcam_frame_tcp)
+
 
         self.btn_cardio.clicked.connect(self.start_webcam)
         self.btn_weighlifting.clicked.connect(self.start_webcam)
 
         #Page Move
-        self.btn_home.clicked.connect(lambda: self.control.showwindow(SunnyMainWindow))
+        self.btn_home.clicked.connect(lambda: (self.closeCam(), self.control.showwindow(SunnyMainWindow)))
         self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
         self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
 
@@ -363,45 +365,64 @@ class SunnyMainWindow(QMainWindow, main):
         self.is_weightlifting_activate = False
         # self.is_profile_activate = False
 
+
+    # def update_webcam_frame(self):
+    #     global webcam_request_cnt
+
+    #     self.is_webcam_activate = True
+
+    #     ret, frame = self.cap.read()
+    #     if ret:
+    #         rgb_frame = cv2.resize(frame, (353, 563))
+    #         rgb_frame = cv2.cvtColor(rgb_frame, cv2.COLOR_BGR2RGB)
+    #         h, w, ch = rgb_frame.shape
+    #         bytes_per_line = ch * w
+    #         qt_image = QImage(rgb_frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+
+    #         self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
+
+    #         messages = ["RequestExResult"]
+    #         # re=requestTCP(messages, img=frame, iscamera=True, reciver=AI_SERVER)
+    #         try:
+    #             re = requestTCP(messages=messages, img=frame, iscamera=True, reciver=AI_SERVER)
+    #         except Exception as e:
+    #             print(e)
+    #             re = "Error"
+    #         print(re)
+    #         webcam_request_cnt = 0
+
     def start_webcam(self):
-
         mobilecamIP = 0
-
         self.cap = cv2.VideoCapture(mobilecamIP)
-        self.webcam_timer.start(33)
+        self.webcam_gui_timer.start(33) 
+        self.webcam_tcp_timer.start(100)  
 
-    def update_webcam_frame(self):
-        global webcam_request_cnt
-
-        self.is_webcam_activate = True
-
+    def update_webcam_frame_gui(self):
         ret, frame = self.cap.read()
-        frame = cv2.resize(frame, (353, 563))
         if ret:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = frame.shape
+            frame_resized = cv2.resize(frame, (353, 563))
+            rgb_frame = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
+            h, w, ch = rgb_frame.shape
             bytes_per_line = ch * w
-            qt_image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
-
+            qt_image = QImage(rgb_frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
 
-            webcam_request_cnt += 1
-            if webcam_request_cnt >= 33:
-                messages = ["RequestExResult"]
-                re=requestTCP(messages, img=frame, iscamera=True, reciver=AI_SERVER)
-                print(re)
-                webcam_request_cnt = 0
+    # def send_webcam_frame_tcp(self):
+    #     ret, frame = self.cap.read()
+    #     if ret:
+    #         messages = ["RequestExResult"]
+    #         try:
+    #             response = requestTCP(messages=messages, img=frame, iscamera=True, reciver=AI_SERVER)
+    #             print(response)
+    #         except Exception as e:
+    #             print(f"TCP Error: {e}")   
             
-    def closeEvent(self, event):
-        self.cap.release()
-        self.timer.stop()
-        super().closeEvent(event)
-
+    def closeCam(self):
+        if  self.cap.isOpened():
+            self.cap.release()  
+            self.webcam_gui_timer.stop() 
+            self.webcam_tcp_timer.stop() 
     def ad_frame(self):
-        if not self.cap.isOpened():
-            print("Video file not found or cannot be opened.")
-            return
-
         ret, frame = self.cap.read()
 
         if not ret: # 다시 읽기
@@ -499,7 +520,7 @@ class SunnyFoodCameraWindow(QMainWindow, food_camera):
         self.lb_shutter_effect.setStyleSheet("background-color: white;")
         QTimer.singleShot(200, lambda: self.lb_shutter_effect.setStyleSheet(""))
 
-        # cv2.imwrite('sunny_food_photo2TCP.jpg', self.current_frame) # 저장 필요없음? MongoDB 사용
+        # cv2.imwrite('sunny_food_photo2TCP.jpg', self.current_frame) # 저장 필요없음?
 
         messages = ["RequestDietAnalyze"]
         re=requestTCP(messages, img=self.current_frame, iscamera=True)
@@ -563,7 +584,6 @@ class SunnyProfileWindow(QMainWindow, profile):
         self.btn_camera.clicked.connect(lambda: self.control.showwindow(SunnyFoodCameraWindow))
         self.btn_profile.clicked.connect(lambda: self.control.showwindow(SunnyProfileWindow))
 
-
         self.btn_MY.clicked.connect(lambda: self.control.showwindow(SunnyAnalyticsWindow))
         self.btn_security.clicked.connect(lambda: self.control.showwindow(SunnySecurityWindow))
 
@@ -572,10 +592,9 @@ class SunnyAnalyticsWindow(QMainWindow, analytics):
         super(SunnyAnalyticsWindow, self).__init__()
         self.control = control
         self.setupUi(self)  
-
+        print(Current_User_ID)
         self.User_Name = self.GetCurrentUser_Name(Current_User_ID)
-
-        self.lb_User_Name.text(f"{self.User_Name}님 분석")
+        self.lb_User_Name.setText(f"{self.User_Name}님 분석")
 
         self.btn_back.setStyleSheet("""
                                     QPushButton {
@@ -606,7 +625,6 @@ class SunnyAnalyticsWindow(QMainWindow, analytics):
         user_name = cursor.fetchone()
         return user_name
     
-
 class SunnySecurityWindow(QMainWindow, security):
     def __init__(self, control):
         super(SunnySecurityWindow, self).__init__()
@@ -647,8 +665,6 @@ class SunnySecurityWindow(QMainWindow, security):
             qt_image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
             self.lb_webcam.setPixmap(QPixmap.fromImage(qt_image))
-
-
 
 if __name__ == '__main__':
     App = QApplication(sys.argv)
