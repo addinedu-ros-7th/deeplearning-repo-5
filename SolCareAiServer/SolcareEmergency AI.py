@@ -2,11 +2,11 @@ import cv2
 import time
 import numpy as np
 import threading
-from playsound import playsound
 import mysql.connector as con
 import mediapipe as mp
 from tensorflow.keras.models import load_model
 from datetime import datetime, timedelta, timezone
+# from playsound import playsound
 
 # Mediapipe 설정
 mp_pose = mp.solutions.pose
@@ -31,10 +31,10 @@ image_save_path = "/home/cho/nah/fall_cap"
 
 # Mysql 연결 설정
 nahonlab_db = {
-    "user": "admin",
-    "password": "Kj40116972!",
-    "host": "database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com",
-    "database": "nahonlab"
+    "user": "****",
+    "password": "****",
+    "host": "****",
+    "database": "****"
 }
 
 # 데이터베이스 연결
@@ -54,11 +54,11 @@ def save_falling_image(frame, count):
     return save_img_path  # 이미지 경로 반환
 
 # 경고음 재생 함수
-def play_warning_sound():
-    global warning_sound_active
-    while warning_sound_active:
-        playsound("/home/cho/nah/warning_sound.mp3")
-        time.sleep(1.5)
+# def play_warning_sound():
+#     global warning_sound_active
+#     while warning_sound_active:
+#         playsound("/home/cho/nah/warning_sound.mp3")
+#         time.sleep(1.5)
 
 # 실시간 HomeCam 실행
 fall_detected_start_time = None
@@ -100,9 +100,9 @@ while True:
             cv2.putText(frame, "FALL DETECTED!", (50, 100), cv2.FONT_HERSHEY_SIMPLEX,
                         2, (0, 0, 255), 4, cv2.LINE_AA)
 
-            if not warning_sound_active:
-                warning_sound_active = True
-                threading.Thread(target=play_warning_sound, daemon=True).start()
+            # if not warning_sound_active:
+            #     warning_sound_active = True
+            #     threading.Thread(target=play_warning_sound, daemon=True).start()
 
             # 낙상이 감지된 시간 및 이미지 경로 DB 저장
             if fall_detected_start_time is None:
