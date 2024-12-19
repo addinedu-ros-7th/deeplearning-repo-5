@@ -115,6 +115,81 @@ class LandmarkExtractor:
         self.pose.close()
 
 class PoseAnalyzer:
+
+    def __init__(self):
+        self.last_feedback = []
+        self.last_feedback_time = 0  # 피드백이 마지막으로 갱신된 시간
+        self.feedback_duration = 2  # 피드백 유지 시간 (초)
+
+        # 운동별 카운트 상태
+        self.exercise_counts = {  # 운동별 카운트 초기화
+            'Pullup': 0,
+            'Squat': 0,
+            'Deadlift': 0,
+            'Pushup': 0,
+            'Dips': 0,
+            'Side Lateral Raise': 0,
+            'Curl': 0,
+        }
+        self.last_exercise_state = {  # 운동 상태를 추적 (예: up/down)
+            'Pullup': 'down',
+            'Squat': 'up',
+            'Deadlift': 'up',
+            'Pushup': 'up',
+            'Dips': 'up',
+            'Side Lateral Raise': 'down',
+            'Curl': 'down',
+        }        
+
+    def count_exercise(self, landmarks, detected_class):
+        """
+        	운동 동작을 감지하고 카운트를 증가.
+        :param landmarks: 랜드마크 좌표
+        :param detected_class: 예측된 운동 클래스
+        """
+        if detected_class == "Pullup":
+            # 팔꿈치 각도로 Pullup 동작 완료 감지
+            left_elbow_angle = self.calculate_angle(
+                landmarks[7], landmarks[8], landmarks[9]
+            )
+            right_elbow_angle = self.calculate_angle(
+                landmarks[6], landmarks[10], landmarks[19]
+            )
+
+            # 상태 전환 로직
+            if left_elbow_angle < 110 and right_elbow_angle < 110:  # 팔꿈치를 충분히 굽혔을 때
+                if self.last_exercise_state["Pullup"] == "down":
+                    self.last_exercise_state["Pullup"] = "up"
+                    print("Pullup: State changed to UP")
+            elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 팔꿈치를 폈을 때
+                if self.last_exercise_state["Pullup"] == "up":
+                    self.exercise_counts["Pullup"] += 1
+                    self.last_exercise_state["Pullup"] = "down"
+                    print("Pullup: State changed to DOWN")
+
+        elif detected_class == "Squat":
+            # 무릎 각도로 Squat 동작 완료 감지
+            left_knee_angle = self.calculate_angle(
+                landmarks[11], landmarks[13], landmarks[15]
+            )
+            right_knee_angle = self.calculate_angle(
+                landmarks[12], landmarks[14], landmarks[16]
+            )
+
+            # 동작 상태 감지 (무릎이 충분히 굽혀졌을 때)
+            if left_knee_angle < 100 and right_knee_angle < 100:  # 내려간 상태
+                if self.last_exercise_state["Squat"] == "up":
+                    self.last_exercise_state["Squat"] = "down"
+            elif left_knee_angle > 160 and right_knee_angle > 160:  # 올라온 상태
+                if self.last_exercise_state["Squat"] == "down":
+                    self.exercise_counts["Squat"] += 1
+                    self.last_exercise_state["Squat"] = "up"
+
+        # 다른 운동도 유사한 방식으로 추가 가능
+
+        return self.exercise_counts
+
+    
     @staticmethod
     def calculate_angle(a, b, c):
         """
@@ -138,11 +213,7 @@ class PoseAnalyzer:
         return angle
 
     def provide_feedback(self, landmarks, last_class_name):
-        """
-        운동 종류와 관절 각도에 따라 피드백 메시지를 생성.
-        :param landmarks: 랜드마크 좌표 리스트
-        :return: 피드백 메시지 리스트
-        """
+
         feedback = []
         
         # 공통: 목 각도 계산 (waist - back - neck)
@@ -169,12 +240,9 @@ class PoseAnalyzer:
         neck_balance_diff = abs(left_neck_angle - right_neck_angle)
         
         # 피드백 조건
-        # 피드백 조건: 좌우 Neck 각도 차이가 30도 이상이고, 특정 조건을 만족할 때
         if neck_balance_diff > 20:
             feedback.append("Maintain neck balance. Adjust your posture.")  # 목 균형을 유지하세요.
-            
-
-
+         
         # 허리 각도 피드백
         if back_angle < 165 or back_angle > 185:
             feedback.append("Keep your back straight.")  # 허리를 곧게 펴세요.
@@ -307,7 +375,21 @@ class PoseAnalyzer:
                 feedback.append("Do not curl your arms too much.")  # 팔을 너무 많이 굽히지 마세요.
 
         return feedback
+    
+    def get_feedback(self, landmarks, detected_class):
+        """
+        피드백 유지 로직을 추가.
+        - 새로운 피드백은 일정 시간 동안 유지.
+        """
+        current_time = time.time()
 
+        # 새로운 피드백 생성
+        if detected_class and (current_time - self.last_feedback_time > self.feedback_duration):
+            self.last_feedback = self.provide_feedback(landmarks, detected_class)
+            self.last_feedback_time = current_time
+
+        # 이전 피드백 유지
+        return self.last_feedback    
 
 
 class PoseClassifier:
@@ -318,9 +400,9 @@ class PoseClassifier:
         self.sequence = deque(maxlen=self.sequence_length)
 
         self.state = 'idle'  # 상태: idle / active
-        self.last_movement_time = 0
+        self.last_movement_time = time.time()
         self.last_prediction_time = 0
-        self.movement_threshold = 50  # 움직임 감지 임계값
+        self.movement_threshold = 10  # 움직임 감지 임계값
         self.inactivity_timeout = 5  # 초 단위
 
         # 마지막 예측 클래스 및 피드백
@@ -335,10 +417,10 @@ class PoseClassifier:
         curr_frame = np.array(landmarks)
 
         movement = np.linalg.norm(curr_frame - prev_frame, axis=1)
-        significant_movement = movement[movement > self.movement_threshold]
+        mean_movement = np.mean(movement)
 
-        return len(significant_movement) > 5
-
+        return mean_movement > (self.movement_threshold / 2)
+    
     def predict_class(self):
         input_data = np.array(self.sequence).reshape(1, self.sequence_length, 24, 2)
         prediction = self.model.predict(input_data)
@@ -348,9 +430,6 @@ class PoseClassifier:
         return predicted_class if confidence > 0.6 else None
 
     def process_sequence(self, landmarks):
-        """
-        상태 관리 및 예측 로직
-        """
         self.sequence.append(landmarks)
         current_time = time.time()
 
@@ -358,6 +437,7 @@ class PoseClassifier:
         if self.state == 'idle' and self.detect_movement(landmarks):
             self.state = 'active'
             self.last_movement_time = current_time
+            print("State changed to ACTIVE")
 
         # 상태: active -> idle (inactivity timeout)
         if self.state == 'active':
@@ -367,8 +447,9 @@ class PoseClassifier:
             if current_time - self.last_movement_time > self.inactivity_timeout:
                 self.state = 'idle'
                 self.sequence.clear()
-                self.last_detected_class = None  # idle 상태가 되면 예측값 초기화
+                self.last_detected_class = None
                 self.last_feedback = []
+                print("State changed to IDLE")
                 return None
 
             # 예측 수행
@@ -378,34 +459,22 @@ class PoseClassifier:
 
                 if predicted_class:
                     self.last_detected_class = predicted_class
-                return self.last_detected_class  # 마지막 클래스 반환
+                return self.last_detected_class
 
-        return self.last_detected_class  # 상태가 유지될 때 마지막 클래스 반환
-
+        return self.last_detected_class
 
 
 class PoseVisualization:
     def __init__(self, image_width, image_height):
         """
-        시각화를 위한 초기화
+        	시각화를 위한 초기화
         :param image_width: 이미지 너비
         :param image_height: 이미지 높이
         """
         self.image_width = image_width
         self.image_height = image_height
 
-    def draw_results(self, frame, extracted_landmarks, hip_x, hip_y, detected_class, state, feedback):
-        """
-        모델 예측 및 상대 좌표 데이터를 기반으로 시각화
-        :param frame: OpenCV 형식의 현재 프레임
-        :param extracted_landmarks: 상대 좌표 기반 랜드마크 (Waist 기준)
-        :param hip_x: 엉덩이 중심 x 좌표 (상대 좌표)
-        :param hip_y: 엉덩이 중심 y 좌표 (상대 좌표)
-        :param detected_class: 예측된 운동 클래스 이름
-        :param state: 현재 운동 상태 (e.g., 'idle', 'active')
-        :param feedback: 생성된 피드백 메시지 리스트
-        :return: 시각화된 프레임 (OpenCV 형식)
-        """
+    def draw_results(self, frame, extracted_landmarks, hip_x, hip_y, detected_class, state, feedback, exercise_counts):
 
         if extracted_landmarks is None or len(extracted_landmarks) == 0:
         # 랜드마크가 없으면 원본 프레임 그대로 반환
@@ -421,8 +490,36 @@ class PoseVisualization:
 
         # 텍스트 추가 (클래스와 상태 표시)
         if detected_class:
-            draw.text((10, 50), f"Class: {detected_class}", font=font, fill=(0, 255, 0))
-        draw.text((10, 100), f"State: {state}", font=font, fill=(255, 0, 0))
+            draw.text((10, 100), f"Class: {detected_class}", font=font, fill=(0, 255, 0))
+        # 상태에 따라 색상 변경 (활성화: 녹색, 비활성화: 회색)
+        state_color = (0, 255, 0) if state == "active" else (128, 128, 128)
+        draw.text((10, 50), f"State: {state.capitalize()}", font=font, fill=state_color)
+
+
+        # 피드백에 따라 강조할 랜드마크 인덱스 설정
+        feedback_mapping = {
+            "neck balance": [17],  # 목 점
+            "back straight": [17, 20, 21],
+            "left_elbow": [7, 8, 9],
+            "right_elbow": [6, 10, 19],  # 팔꿈치
+            "left_knee": [11, 13, 15],  # 무릎
+            "right_knee": [12, 14, 16]  # 무릎
+        }
+
+        # 강조할 점 인덱스 추출
+        highlighted_indices = set()
+        for message in feedback:
+            message_lower = message.lower()
+            for key, indices in feedback_mapping.items():
+                if key in message_lower:
+                    highlighted_indices.update(indices)
+
+        # 빨간 점 연결 (highlighted_indices 기반으로 점들 사이의 선 계산)
+        red_connections = []
+        highlighted_indices = sorted(highlighted_indices)  # 정렬된 인덱스로 처리
+        for i in range(len(highlighted_indices) - 1):
+            red_connections.append((highlighted_indices[i], highlighted_indices[i + 1]))
+
 
         # 랜드마크 연결 규칙 정의
         landmark_connections = [
@@ -431,7 +528,6 @@ class PoseVisualization:
             (11, 13), (12, 14), (13, 15), (14, 16), (15, 22), (16, 23)
         ]
 
-        # 랜드마크 연결 (선 그리기)
         # 랜드마크 연결 (선 그리기)
         for conn in landmark_connections:
             start_idx, end_idx = conn
@@ -448,8 +544,25 @@ class PoseVisualization:
             end_x = int((hip_x * self.image_width) + end_coord[0])
             end_y = int((hip_y * self.image_height) + end_coord[1])
 
-            if start_x > 0 and start_y > 0 and end_x > 0 and end_y > 0:
-                draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 255, 0), width=3)
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 255, 0), width=3)
+
+        # 피드백 관련 점들 연결 (빨간색 선)
+        for conn in red_connections:
+            start_idx, end_idx = conn
+            start_coord = extracted_landmarks[start_idx]
+            end_coord = extracted_landmarks[end_idx]
+
+            # 예외 처리: (0, 0) 좌표는 건너뛰지만, Waist(21번)는 예외적으로 포함
+            if (np.array_equal(start_coord, [0, 0]) and start_idx != 21) or (np.array_equal(end_coord, [0, 0]) and end_idx != 21):
+                continue
+
+            start_x = int((hip_x * self.image_width) + start_coord[0])
+            start_y = int((hip_y * self.image_height) + start_coord[1])
+            end_x = int((hip_x * self.image_width) + end_coord[0])
+            end_y = int((hip_y * self.image_height) + end_coord[1])
+
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(255, 0, 0), width=3)
+
 
 
         # 랜드마크 점 찍기 (얼굴 랜드마크 인덱스 제외)
@@ -467,15 +580,24 @@ class PoseVisualization:
                 abs_x = int((hip_x * self.image_width) + x)
                 abs_y = int((hip_y * self.image_height) + y)
 
-                if abs_x > 0 and abs_y > 0:
-                    draw.ellipse((abs_x - 5, abs_y - 5, abs_x + 5, abs_y + 5), fill=(0, 0, 255))
+                # 피드백 관련 점은 빨간색
+                dot_color = (255, 0, 0) if idx in highlighted_indices else (0, 255, 0)
+                draw.ellipse((abs_x - 5, abs_y - 5, abs_x + 5, abs_y + 5), fill=dot_color)
 
 
         # 피드백 메시지 표시
         y_offset = 150
         for message in feedback:
-            draw.text((10, y_offset), message, font=font, fill=(255, 0, 0))
+            draw.text((10, y_offset), message, font=font, fill=(255, 255, 0))
             y_offset += 40
+
+        # 운동별 카운트 표시
+        y_offset = 300
+        for exercise, count in exercise_counts.items():
+            if count > 0:  # 카운트가 0보다 큰 경우에만 표시
+                draw.text((10, y_offset), f"{exercise}: {count}", font=font, fill=(255, 255, 255))  # 흰색 텍스트
+                y_offset += 30
+
 
         # 다시 OpenCV로 변환
         frame = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
@@ -491,7 +613,8 @@ class PoseTrackingApp:
         self.last_feedback = []
 
     def run(self):
-        cap = cv2.VideoCapture(0)
+        video_path = "../video/squart1.webm"
+        cap = cv2.VideoCapture(video_path)
         print("웹캠 시작... 종료하려면 'q'를 누르세요.")
 
         while cap.isOpened():
@@ -499,7 +622,7 @@ class PoseTrackingApp:
             if not ret:
                 break
 
-            frame = cv2.resize(frame, (600, 800))
+            frame = cv2.resize(frame, (500, 800))
             image_height, image_width, _ = frame.shape
 
             if self.pose_visualizer is None:
@@ -509,6 +632,9 @@ class PoseTrackingApp:
             results = self.landmark_extractor.pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
             hip_x, hip_y = 0, 0
             detected_class = None
+
+            landmarks = np.array([])  # 초기화
+
 
             if results.pose_landmarks:
                 # 랜드마크 추출 및 중심점 계산
@@ -525,14 +651,20 @@ class PoseTrackingApp:
 
                     # 예측된 클래스에 대한 피드백 생성
                     if detected_class:
-                        self.last_feedback = self.pose_analyzer.provide_feedback(landmarks, detected_class)
+                        # 운동 카운트 업데이트
+                        exercise_counts = self.pose_analyzer.count_exercise(landmarks, detected_class)
+                        self.last_feedback = self.pose_analyzer.get_feedback(landmarks, detected_class)
+
+                        # 운동별 카운트 출력
+                        print(f"Exercise Counts: {exercise_counts}")
 
             # 결과 시각화
             frame = self.pose_visualizer.draw_results(
                 frame, landmarks, hip_x, hip_y, 
                 detected_class or self.pose_classifier.last_detected_class,  # 마지막 클래스 유지
                 self.pose_classifier.state, 
-                self.last_feedback if detected_class else []  # idle 상태에서는 피드백 초기화
+                self.last_feedback if detected_class else [],  # idle 상태에서는 피드백 초기화
+                self.pose_analyzer.exercise_counts  # 운동별 카운트 전달
             )
 
             cv2.imshow('Pose Classification', frame)
