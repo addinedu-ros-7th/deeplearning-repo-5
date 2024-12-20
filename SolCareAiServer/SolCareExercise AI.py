@@ -143,17 +143,17 @@ class PoseAnalyzer:
 
     def count_exercise(self, landmarks, detected_class):
         """
-        	운동 동작을 감지하고 카운트를 증가.
+        운동 동작을 감지하고 카운트를 증가.
         :param landmarks: 랜드마크 좌표
         :param detected_class: 예측된 운동 클래스
         """
         if detected_class == "Pullup":
             # 팔꿈치 각도로 Pullup 동작 완료 감지
             left_elbow_angle = self.calculate_angle(
-                landmarks[7], landmarks[8], landmarks[9]
+                landmarks[5], landmarks[7], landmarks[9]
             )
             right_elbow_angle = self.calculate_angle(
-                landmarks[6], landmarks[10], landmarks[19]
+                landmarks[6], landmarks[8], landmarks[10]
             )
 
             # 상태 전환 로직
@@ -466,11 +466,6 @@ class PoseClassifier:
 
 class PoseVisualization:
     def __init__(self, image_width, image_height):
-        """
-        	시각화를 위한 초기화
-        :param image_width: 이미지 너비
-        :param image_height: 이미지 높이
-        """
         self.image_width = image_width
         self.image_height = image_height
 
@@ -613,7 +608,7 @@ class PoseTrackingApp:
         self.last_feedback = []
 
     def run(self):
-        video_path = "../video/squart1.webm"
+        video_path = "../video/고1 풀업 자세맞나요？ [LIzOX_2rKos].webm"
         cap = cv2.VideoCapture(video_path)
         print("웹캠 시작... 종료하려면 'q'를 누르세요.")
 
