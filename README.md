@@ -2,15 +2,15 @@
 # 솔로를 위한 인공지능 헬스케어 서비스
 
 # 1. 프로젝트 소개
-## 주제
+## 1-1. 주제
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
 
-## 주제 선정 배경
+## 1-2. 주제 선정 배경
 - 1인 가구의 증가
 - 기존 서비스는 운동, 식단 기록을 사용자가 직접 작성해야 함
 - 운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재
 
-## 팀원 및 역할
+## 1-3. 팀원 및 역할
 | **이름**    | **담당 업무**                                                                                             |
 |-------------|-----------------------------------------------------------------------------------------------------|
 | **조성현**<br/>**(팀장)**  | • 위험 상황 관리 기능 개발 <br/> • DB 구성 및 Jira, Confluence, Github 관리                            |
@@ -19,7 +19,7 @@
 | **김선웅**  | • GUI 개발 <br/> · 회원가입, • 사용자 건강 목표 설정 기능 개발 <br/> • 사용자 기록 확인 기능 개발 |
 | **문세희**  | • Data Labeling <br/> • 데이터 수집 및 기술 조사                                                    |
 
-## 기술 스택
+## 1-4. 기술 스택
 | **구분**            | **상세**                                                                                   |
 |---------------------|-------------------------------------------------------------------------------------------|
 | **개발 언어**     | ![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)        |
@@ -30,7 +30,7 @@
 | **협업 도구**     | ![Jira](https://img.shields.io/badge/Jira-blue?logo=jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-blue?logo=confluence&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-purple?logo=slack&logoColor=white) |
 | **소스 버전 관리** | ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)                   |
 
-## User Requirements
+## 1-5. User Requirements
 | **구분**       | **기능**                                | **설명**                                                                                 |
 |:----------------:|---------------------------------------|-----------------------------------------------------------------------------------------|
 | **운동**       | 운동/휴식 상태 인식 기능                | - 운동, 휴식 상태 인식<br>- 휴식 시간 알림                                                  |
@@ -48,69 +48,64 @@
 
 
 # 2.설계
-## Main Functions
+## 2-1. Main Functions
 ![image](https://github.com/user-attachments/assets/ac47e508-e241-46de-be41-355b5fb416bf)
 
-## System Architecture
+## 2-2. System Architecture
 ![image](https://github.com/user-attachments/assets/e0d874b7-46b2-4341-a7ce-8efe42a4988a)
 
-## ERD
+## 2-3. ERD
 ![image](https://github.com/user-attachments/assets/831ba3ec-e54a-4dec-982d-b7453a00e328)</br>
 
-## Sequence Diagram
+## 2-4. Sequence Diagram
 ![image](https://github.com/user-attachments/assets/8f55f1a4-486c-410f-9acb-d89ada9927ce)
 
-## User Scenario
+## 2-5. User Scenario
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
 
-## 화면 구성도</br>
+## 2-6. 화면 구성도</br>
 
 
 
 
 
 # 3. 기능
-## 회원 가입
+## 3-1. 회원 가입
 
-## 식단 관리
+## 3-2. 식단 관리
 
-## 운동 인식 및 피드백
+## 3-3. 운동 인식 및 피드백
 
-## 위험 상황 관리
+## 3-4. 위험 상황 관리
 
-## 사용자 기록 확인 / 운동 및 식단 추천 / 체성분 예측 기능
+## 3-5. 사용자 기록 확인 / 운동 및 식단 추천 / 체성분 예측 기능
 
-
-최근 1인 가구가 점차 늘어나는 경향에 따라 1인 관리 서비스가 많이 보편화되는 상황입니다.</br></br>
-그러나 기존의 개인 식단 케어 서비스는 사용자가 직접 입력해야 하는 번거로움이 있으며, 개인 운동 케어 서비스는 혼자 운동하는 사람들이 정확한 자세를 잡기에 피드백이 부족한 점이 있습니다.
-또한 1인 가구에서 일어나는 낙상사고와 같은 위험 상황은 홀로 대처하기 힘들며, 자칫 잘못하면 매우 위험한 상황까지 이를수 있습니다.</br></br>
-이러한 점에서 저희 NahonLab 팀은 Deep Learning(LSTM, GRU, Yolov8) 모델 기반의 1인 관리 서비스를 제공함으로써, 혼자서도 운동, 식단, 건강 관리 가능한 서비스를 제안하고자 합니다. </br>
 
 
 
 # 4. 주요 기술
 
-## 회원 관리
+## 4-1. 회원 관리
 
-## 음식
+## 4-2. 음식
 
-## 운동
+## 4-3. 운동
 
-## 위험 상황
+## 4-4. 위험 상황
 
-## 사용자 맞춤 음식 추천 기능
+## 4-5. 사용자 맞춤 음식 추천 기능
 
-## 사용자 맞춤 운동 추천 기능
+## 4-6. 사용자 맞춤 운동 추천 기능
 
-## 사용자 체성분 예측 추천 기능
+## 4-7. 사용자 체성분 예측 추천 기능
 
 # 5. 결론
 
-## 통합 테스트 결과
+## 5-1. 통합 테스트 결과
 
-## 통합 영상
+## 5-2. 통합 영상
 
-## 프로젝트 후기 및 고찰
+## 5-3. 프로젝트 후기 및 고찰
 
 
 
