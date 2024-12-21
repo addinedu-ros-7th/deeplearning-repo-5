@@ -25,23 +25,28 @@
 | **추천**  | 사용자 맞춤 식단 및 운동 추천 기능        | - 사용자의 체성분 기록, 목표, 운동량을 바탕으로 목표 탄수화물, 단백질, 지방량과 그에 맞는 식단 추천 제공<br>- 사용자의 체성분 기록, 식단을 바탕으로 운동 루틴 추천 |
 | **예측** | 사용자 체성분 예측 기능                 | - 사용자의 누적된 운동, 식단 기록, 체성분을 분석하여 미래 체성분(몸무게, 체지방률, 골격근량) 예측 제공 |
 
-#### 1-2.기술 스택
-|분류|기술|
-|---|---|
-|개발환경|<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=white"/> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white"/>|
-|언어|<img src="https://img.shields.io/badge/Tensorflow-FF6F00?style=for-the-badge&logo=Tensorflow&logoColor=white"/> <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white"/> <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/>|
-|GUI|<img src="https://img.shields.io/badge/PYQT-41CD52?style=for-the-badge&logo=cplusplus&logoColor=white"/>|
-|데이터베이스|<img src="https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/> <img src="https://img.shields.io/badge/amazon rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"/>|
-|협업 툴|<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/confluence-172B4D?style=for-the-badge&logo=confluence&logoColor=white"/> <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white"/> <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"/> |
+## 기술 스택
+| **구분**            | **상세**                                                                                   |
+|---------------------|-------------------------------------------------------------------------------------------|
+| **개발 언어**     | ![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)        |
+| **개발 환경**     | ![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-orange?logo=ubuntu&logoColor=white) ![Amazon RDS](https://img.shields.io/badge/Amazon%20RDS-orange?logo=amazonaws&logoColor=white)  ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?logo=visualstudiocode&logoColor=white) |
+| **UI**           | ![PyQt](https://img.shields.io/badge/PYQT5-green?logo=qt&logoColor=white)                   |
+| **DBMS**         | ![MySQL](https://img.shields.io/badge/MySQL-5.7-blue?logo=mysql&logoColor=white)            |
+| **AI/DL**        | ![TensorFlow](https://img.shields.io/badge/TensorFlow-orange?logo=tensorflow&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-red?logo=pytorch&logoColor=white) ![YOLO](https://img.shields.io/badge/YOLO-yellow?logo=googlecolab&logoColor=white) ![Mediapipe](https://img.shields.io/badge/Mediapipe-brightgreen?logo=mediapipe&logoColor=white) |
+| **협업 도구**     | ![Jira](https://img.shields.io/badge/Jira-blue?logo=jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-blue?logo=confluence&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-purple?logo=slack&logoColor=white) |
+| **소스 버전 관리** | ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)                   |
 
-#### 1-3. 팀원 구성
-|구분|이름|업무|
-|---|---|---|
-|팀장|조성현|• 위험 상황 인식 모델 개발 <br/> • DB 구성 및 Jira, Confluence, Github 관리|
-|팀원|김재현|• 운동 분류 및 피드백 모델 개발 <br/> • 사용자 맞춤 식단 및 운동 추천, 사용자 체성분 예측 기능 개발|
-|팀원|함동균|• 시스템 통합(Server) <br/> • 음식 분류 및 양 측정 기능 개발|
-|팀원|김선웅|• GUI 구현 <br/> · 회원가입, 사용자 건강 목표 설정 기능 개발 <br/> · 사용자 식단, 운동, 체성분 기록 및 확인 기능 개발 |
-|팀원|문세희|• Data Labeling <br/> • 데이터 수집 및 기술 조사|
+
+## 팀원 및 역할
+
+| **이름**    | **담당 업무**                                                                                             |
+|-------------|-----------------------------------------------------------------------------------------------------|
+| **조성현**  | • 위험 상황 관리 기능 개발 <br/> • DB 구성 및 Jira, Confluence, Github 관리                            |
+| **김재현**  | • 운동 인식 및 피드백 기능 개발 <br/> • 사용자 맞춤 식단 및 운동 추천 기능 개발 <br/> • 사용자 체성분 예측 기능 개발            |
+| **함동균**  | • 시스템 통합(Server) <br/> • 음식 분류 및 양 측정 기능 개발                                          |
+| **김선웅**  | • GUI 개발 <br/> · 회원가입, • 사용자 건강 목표 설정 기능 개발 <br/> • 사용자 기록 확인 기능 개발 |
+| **문세희**  | • Data Labeling <br/> • 데이터 수집 및 기술 조사                                                    |
+
 
 ### 2.프로젝트 설계
 #### 2-1. 기능리스트</br>
