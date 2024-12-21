@@ -1,5 +1,6 @@
 # deeplearning-repo-5
 # 딥러닝 프로젝트 5조 저장소 : Solcare AI Service
+![image](https://github.com/user-attachments/assets/035e085e-c6a9-4e67-be6d-4700480d66dd)
 
 ### 1.프로젝트 소개
 #### 1-1.프로젝트 개요
