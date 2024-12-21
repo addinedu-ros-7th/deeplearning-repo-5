@@ -116,7 +116,7 @@ class PoseAnalyzer:
     def __init__(self):
         self.last_feedback = []
         self.last_feedback_time = 0  # 피드백이 마지막으로 갱신된 시간
-        self.feedback_duration = 2  # 피드백 유지 시간 (초)
+        self.feedback_duration = 1.5  # 피드백 유지 시간 (초)
 
         # 운동별 카운트 상태
         self.exercise_counts = {  # 운동별 카운트 초기화
@@ -128,7 +128,7 @@ class PoseAnalyzer:
             'Side Lateral Raise': 0,
             'Curl': 0,
         }
-        self.last_exercise_state = {  # 운동 상태를 추적 (예: up/down)
+        self.last_exercise_state = {  # 운동 상태를 추적
             'Dips': 'up',
             'Pullup': 'down',
             'Pushup': 'up',
@@ -152,12 +152,10 @@ class PoseAnalyzer:
             if left_elbow_angle < 110 and right_elbow_angle < 110:  # 팔꿈치를 충분히 굽혔을 때
                 if self.last_exercise_state["Pullup"] == "down":
                     self.last_exercise_state["Pullup"] = "up"
-                    print("Pullup: State changed to UP")
             elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 팔꿈치를 폈을 때
                 if self.last_exercise_state["Pullup"] == "up":
                     self.exercise_counts["Pullup"] += 1
                     self.last_exercise_state["Pullup"] = "down"
-                    print("Pullup: State changed to DOWN")
 
         elif detected_class == "Squat":
             # 무릎 각도로 Squat 동작 완료 감지
@@ -238,9 +236,13 @@ class PoseAnalyzer:
                 landmarks[8], landmarks[6], landmarks[12]
             )
 
-            if left_arm_angle > 60 and right_arm_angle > 60:  # 올라간 상태
+            if left_arm_angle > 70 and right_arm_angle > 70:  # 올라간 상태
                 if self.last_exercise_state["Side Lateral Raise"] == "down":
                     self.last_exercise_state["Side Lateral Raise"] = "up"
+
+            elif left_arm_angle <= 50 and right_arm_angle <= 50:  # 내려간 상태
+                if self.last_exercise_state["Side Lateral Raise"] == "up":
+                    self.last_exercise_state["Side Lateral Raise"] = "down"
                     self.exercise_counts["Side Lateral Raise"] += 1
 
         elif detected_class == "Curl":
@@ -252,10 +254,10 @@ class PoseAnalyzer:
                 landmarks[6], landmarks[8], landmarks[10]
             )
 
-            if left_elbow_angle < 90 and right_elbow_angle < 90:  # 굽힘 상태
+            if left_elbow_angle < 60 or right_elbow_angle < 60:  # 굽힘 상태
                 if self.last_exercise_state["Curl"] == "down":
                     self.last_exercise_state["Curl"] = "up"
-            elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 폄 상태
+            elif left_elbow_angle > 100 or right_elbow_angle > 100:  # 폄 상태
                 if self.last_exercise_state["Curl"] == "up":
                     self.exercise_counts["Curl"] += 1
                     self.last_exercise_state["Curl"] = "down"
@@ -306,12 +308,12 @@ class PoseAnalyzer:
         neck_balance_diff = abs(left_neck_angle - right_neck_angle)
         
         # 피드백 조건
-        if neck_balance_diff > 20:
-            feedback.append("Maintain neck balance. Adjust your posture.")  # 목 균형을 유지하세요.
+        if neck_balance_diff > 10:
+            feedback.append("Maintain neck balance. Adjust your posture.")
          
         # 허리 각도 피드백
-        if back_angle < 165 or back_angle > 185:
-            feedback.append("Keep your back straight.")  # 허리를 곧게 펴세요.
+        if back_angle < 170 or back_angle > 185:
+            feedback.append("Keep your back straight.")
 
         if last_class_name == "Pullup":
             # 팔꿈치 각도 계산
@@ -327,10 +329,10 @@ class PoseAnalyzer:
             )
 
             # 피드백 생성
-            if left_elbow_angle > 160 or right_elbow_angle > 160:
-                feedback.append("Bend your elbows more.")  # 팔꿈치를 더 굽히세요.
-            if left_elbow_angle < 90 or right_elbow_angle < 90:
-                feedback.append("Your elbows are bent too much.")  # 팔꿈치를 너무 많이 굽혔습니다.
+            if self.last_exercise_state["Pullup"] == "down":
+                feedback.append("Up!")
+            if self.last_exercise_state["Pullup"] == "up":        
+                feedback.append("Down!")
 
         elif last_class_name == "Squat":
             # 무릎 각도 계산
@@ -347,7 +349,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_knee_angle < 70 or right_knee_angle < 70:
-                feedback.append("Your knees are bent too much.")  # 무릎이 너무 많이 굽혀졌습니다.
+                feedback.append("Your knees are bent too much.")
 
         elif last_class_name == "Deadlift":
             # 무릎 각도 계산
@@ -364,7 +366,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_knee_angle > 90 or right_knee_angle > 90:
-                feedback.append("Do not bend your knees too much.")  # 무릎을 너무 많이 굽히지 마세요.
+                feedback.append("Do not bend your knees too much.")
 
         elif last_class_name == "Pushup":
             # 팔꿈치 각도 계산
@@ -381,7 +383,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_elbow_angle < 90 or right_elbow_angle < 90:
-                feedback.append("Your elbows are bent too much.")  # 팔꿈치가 너무 많이 굽혀졌습니다.
+                feedback.append("Your elbows are bent too much.")
 
         elif last_class_name == "Dips":
             # 팔꿈치 각도 계산
@@ -398,9 +400,9 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_elbow_angle > 120 or right_elbow_angle > 120:
-                feedback.append("Lower yourself further.")  # 몸을 더 낮추세요.
+                feedback.append("Lower yourself further.")
             if left_elbow_angle < 70 or right_elbow_angle < 70:
-                feedback.append("Do not go too low.")  # 너무 낮추지 마세요.
+                feedback.append("Do not go too low.")
 
         elif last_class_name == "Side Lateral Raise":
             # 팔 각도 계산
@@ -417,9 +419,9 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_shoulder_angle < 80 or right_shoulder_angle < 80:
-                feedback.append("Lift your arms higher.")  # 팔을 더 높이 들어올리세요.
+                feedback.append("Lift your arms higher.")
             if left_shoulder_angle > 120 or right_shoulder_angle > 120:
-                feedback.append("Do not lift your arms too high.")  # 팔을 너무 높이 들지 마세요.
+                feedback.append("Do not lift your arms too high.")
 
         elif last_class_name == "Curl":
             # 팔꿈치 각도 계산
@@ -435,11 +437,12 @@ class PoseAnalyzer:
             )
 
             # 피드백 생성
-            if left_elbow_angle > 160 or right_elbow_angle > 160:
-                feedback.append("Lower the weights more.")  # 팔을 더 내리세요.
-            if left_elbow_angle < 30 or right_elbow_angle < 30:
-                feedback.append("Do not curl your arms too much.")  # 팔을 너무 많이 굽히지 마세요.
-
+            if self.last_exercise_state["Pullup"] == "down":
+                if left_elbow_angle > 160 or right_elbow_angle > 160:
+                   feedback.append("Lower the weights more.")
+            if self.last_exercise_state["Pullup"] == "down":
+                if left_elbow_angle < 30 or right_elbow_angle < 30:
+                    feedback.append("Do not curl your arms too much.")
         return feedback
     
     def get_feedback(self, landmarks, detected_class):
@@ -465,7 +468,7 @@ class PoseClassifier:
         self.idle_start_time = time.time()  # idle 상태 시작 시간 초기화
         self.last_movement_time = time.time()
         self.last_prediction_time = 0
-        self.movement_threshold = 10  # 움직임 감지 임계값
+        self.movement_threshold = 5  # 움직임 감지 임계값
         self.inactivity_timeout = 5  # 초 단위
 
         # 마지막 예측 클래스 및 피드백
@@ -524,11 +527,6 @@ class PoseClassifier:
                 if predicted_class:
                     self.last_detected_class = predicted_class
                 return self.last_detected_class
-
-        # 상태: idle일 때 지속 시간 출력
-        if self.state == 'idle':
-            idle_duration = int(current_time - self.idle_start_time)  # idle 상태 지속 시간을 정수로 변환
-            print(f"Idle Duration: {idle_duration} seconds")  # 지속 시간 출력
 
         return self.last_detected_class
 
@@ -627,7 +625,6 @@ class PoseVisualization:
             draw.line([(start_x, start_y), (end_x, end_y)], fill=(255, 0, 0), width=3)
 
 
-
         # 랜드마크 점 찍기 (얼굴 랜드마크 인덱스 제외)
         excluded_indices = [0, 1, 2, 3, 4]
         for idx, coord in enumerate(extracted_landmarks):
@@ -656,7 +653,7 @@ class PoseVisualization:
 
         # Idle Duration 출력
         if state == "idle":
-            draw.text((10, 150), f"Idle Duration: {idle_duration} seconds", font=font, fill=(255, 255, 0))
+            draw.text((10, 150), f"Resting: {idle_duration} seconds", font=font, fill=(255, 255, 0))
 
         # 운동별 카운트 표시
         y_offset = 300
@@ -680,7 +677,7 @@ class PoseTrackingApp:
         self.last_feedback = []
 
     def run(self):
-        video_path = "../video/고1 풀업 자세맞나요？ [LIzOX_2rKos].webm"
+        video_path = "../video/curl.webm"
         cap = cv2.VideoCapture(0)
         print("웹캠 시작... 종료하려면 'q'를 누르세요.")
 
