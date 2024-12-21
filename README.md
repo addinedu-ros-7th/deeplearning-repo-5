@@ -1,5 +1,5 @@
 # deeplearning-repo-5
-# 딥러닝 프로젝트 5조 저장소 : NahonLab Solcare AI Service
+# 딥러닝 프로젝트 5조 저장소 : Solcare AI Service
 
 ### 1.프로젝트 소개
 #### 1-1.프로젝트 개요
