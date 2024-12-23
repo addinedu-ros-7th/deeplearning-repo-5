@@ -76,8 +76,7 @@
 
 ## 3-3. 운동 인식 및 피드백
 ### 1. 
-<img src="https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25" alt="상태 인식" width="500">
-
+[상태 인식](https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25")
 ### 2.
 [동작 인식](https://github.com/user-attachments/assets/617e94c4-9d1b-47ed-be11-4750db8b5aa4)
 ### 3. 
