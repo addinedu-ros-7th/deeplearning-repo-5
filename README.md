@@ -72,14 +72,11 @@
 ## 3-2. 식단 관리
 
 ## 3-3. 운동 인식 및 피드백
-### 1
-[상태 인식 동영상 보기](https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25)
-### 2
-[동작 인식 동영상 보기](https://github.com/user-attachments/assets/617e94c4-9d1b-47ed-be11-4750db8b5aa4)
-### 3
-[피드백 및 카운팅 보기](https://github.com/user-attachments/assets/c889f781-6e95-426f-a533-450c28cc6416)
-### 4
-[복합 동작 인식 동영상 보기](https://github.com/user-attachments/assets/0c859c26-6663-4016-9322-d2b22eb33de6)
+### 1. [상태 인식](https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25)
+### 2. [동작 인식](https://github.com/user-attachments/assets/617e94c4-9d1b-47ed-be11-4750db8b5aa4)
+### 3. [피드백, 카운팅](https://github.com/user-attachments/assets/c889f781-6e95-426f-a533-450c28cc6416)
+### 4. [복합 동작 인식](https://github.com/user-attachments/assets/0c859c26-6663-4016-9322-d2b22eb33de6)
+
 ## 3-4. 위험 상황 관리
 
 ## 3-5. 사용자 기록 확인 / 운동 및 식단 추천 / 체성분 예측 기능
