@@ -60,7 +60,10 @@
 
 ## 2-5. User Scenario
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
+ </br>
 
+**[Feeding Schedule Setting]**
+<br/>
 ## 2-6. 화면 구성도</br>
 
 
@@ -73,7 +76,8 @@
 
 ## 3-3. 운동 인식 및 피드백
 ### 1. 
-[상태 인식](https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25)
+<img src="https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25" alt="상태 인식" width="500">
+
 ### 2.
 [동작 인식](https://github.com/user-attachments/assets/617e94c4-9d1b-47ed-be11-4750db8b5aa4)
 ### 3. 
