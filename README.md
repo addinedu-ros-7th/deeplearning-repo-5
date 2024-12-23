@@ -2,7 +2,7 @@
 # 솔로를 위한 인공지능 헬스케어 서비스
 
 # 1. 프로젝트 소개
-## 1-1. 주제
+## 1-1. 목표
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
 
 ## 1-2. 주제 선정 배경
@@ -25,16 +25,7 @@
 | **추천**  | 사용자 맞춤 식단 및 운동 추천 기능        | - 사용자의 체성분 기록, 목표, 운동량을 바탕으로 목표 탄수화물, 단백질, 지방량과 그에 맞는 식단 추천 제공<br>- 사용자의 체성분 기록, 식단을 바탕으로 운동 루틴 추천 |
 | **예측** | 사용자 체성분 예측 기능                 | - 사용자의 누적된 운동, 식단 기록, 체성분을 분석하여 미래 체성분(몸무게, 체지방률, 골격근량) 예측 제공 |
 
-
-
-# 2.설계
-## 2-1. Main Functions
-![image](https://github.com/user-attachments/assets/ac47e508-e241-46de-be41-355b5fb416bf)
-
-## 2-2. System Architecture
-![image](https://github.com/user-attachments/assets/e0d874b7-46b2-4341-a7ce-8efe42a4988a)
-
-## 2-3. 팀원 및 역할
+## 1-4. 팀원 및 역할
 | **이름**    | **담당 업무**                                                                                             |
 |-------------|-----------------------------------------------------------------------------------------------------|
 | **조성현**<br/>**(팀장)**  | • 위험 상황 관리 기능 개발 <br/> • DB 구성 및 Jira, Confluence, Github 관리                            |
@@ -43,18 +34,7 @@
 | **김선웅**  | • GUI 개발 <br/> · 회원가입, • 사용자 건강 목표 설정 기능 개발 <br/> • 사용자 기록 확인 기능 개발 |
 | **문세희**  | • Data Labeling <br/> • 데이터 수집 및 기술 조사                                                    |
 
-## 2-4. ERD
-![image](https://github.com/user-attachments/assets/831ba3ec-e54a-4dec-982d-b7453a00e328)</br>
-
-## 2-5. Sequence Diagram
-![image](https://github.com/user-attachments/assets/8f55f1a4-486c-410f-9acb-d89ada9927ce)
-
-## 2-6. User Scenario
-![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
-
-## 2-7. 화면 구성도</br>
-
-## 2-8. 기술 스택
+## 1-5. 활용 기술
 | **구분**            | **상세**                                                                                   |
 |---------------------|-------------------------------------------------------------------------------------------|
 | **개발 언어**     | ![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)        |
@@ -64,6 +44,25 @@
 | **AI/DL**        | ![TensorFlow](https://img.shields.io/badge/TensorFlow-orange?logo=tensorflow&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-red?logo=pytorch&logoColor=white) ![YOLO](https://img.shields.io/badge/YOLO-yellow?logo=googlecolab&logoColor=white) ![Mediapipe](https://img.shields.io/badge/Mediapipe-brightgreen?logo=mediapipe&logoColor=white) |
 | **협업 도구**     | ![Jira](https://img.shields.io/badge/Jira-blue?logo=jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-blue?logo=confluence&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-purple?logo=slack&logoColor=white) |
 | **소스 버전 관리** | ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)                   |
+
+# 2.설계
+## 2-1. Main Functions
+![image](https://github.com/user-attachments/assets/ac47e508-e241-46de-be41-355b5fb416bf)
+
+## 2-2. System Architecture
+![image](https://github.com/user-attachments/assets/e0d874b7-46b2-4341-a7ce-8efe42a4988a)
+
+## 2-3. ERD
+![image](https://github.com/user-attachments/assets/831ba3ec-e54a-4dec-982d-b7453a00e328)</br>
+
+## 2-4. Sequence Diagram
+![image](https://github.com/user-attachments/assets/8f55f1a4-486c-410f-9acb-d89ada9927ce)
+
+## 2-5. User Scenario
+![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
+
+## 2-6. 화면 구성도</br>
+
 
 
 
