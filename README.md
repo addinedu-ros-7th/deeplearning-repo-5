@@ -47,7 +47,7 @@
 
 # 2.설계
 ## 2-1. Main Functions
-![image](https://github.com/user-attachments/assets/ac47e508-e241-46de-be41-355b5fb416bf)
+![image](https://github.com/user-attachments/assets/496c7d39-755c-4297-ae55-dd8ff5789fd9)
 
 ## 2-2. System Architecture
 ![image](https://github.com/user-attachments/assets/e0d874b7-46b2-4341-a7ce-8efe42a4988a)
@@ -62,7 +62,7 @@
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
  </br>
 
-**[Feeding Schedule Setting]**
+**[이름]**
 <br/>
 ## 2-6. 화면 구성도</br>
 
