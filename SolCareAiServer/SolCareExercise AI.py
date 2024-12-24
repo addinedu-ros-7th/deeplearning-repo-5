@@ -5,6 +5,8 @@ import time
 from tensorflow.keras.models import load_model
 from collections import deque
 from PIL import Image, ImageDraw, ImageFont
+import pymysql
+
 
 class LandmarkExtractor:
     def __init__(self):
@@ -113,10 +115,11 @@ class LandmarkExtractor:
 
 class PoseAnalyzer:
 
-    def __init__(self):
+    def __init__(self, db_manager=None):
+        self.db_manager = db_manager  # DB 매니저를 인스턴스 변수로 저장
         self.last_feedback = []
         self.last_feedback_time = 0  # 피드백이 마지막으로 갱신된 시간
-        self.feedback_duration = 1.5  # 피드백 유지 시간 (초)
+        self.feedback_duration = 2  # 피드백 유지 시간 (초)
 
         # 운동별 카운트 상태
         self.exercise_counts = {  # 운동별 카운트 초기화
@@ -128,7 +131,10 @@ class PoseAnalyzer:
             'Side Lateral Raise': 0,
             'Curl': 0,
         }
-        self.last_exercise_state = {  # 운동 상태를 추적
+
+        self.previous_exercise_counts = {exercise: 0 for exercise in self.exercise_counts}
+
+        self.last_exercise_state = {  # 운동 상태를 추적 (예: up/down)
             'Dips': 'up',
             'Pullup': 'down',
             'Pushup': 'up',
@@ -136,7 +142,17 @@ class PoseAnalyzer:
             'Deadlift': 'up',
             'Side Lateral Raise': 'down',
             'Curl': 'down',
-        }        
+        }       
+
+    def get_new_counts(self):
+        # 증가분 계산
+        new_counts = {
+            exercise: self.exercise_counts[exercise] - self.previous_exercise_counts[exercise]
+            for exercise in self.exercise_counts
+        }
+        # 이전 상태 업데이트
+        self.previous_exercise_counts = self.exercise_counts.copy()
+        return new_counts  
 
     def count_exercise(self, landmarks, detected_class):
         if detected_class == "Pullup":
@@ -152,10 +168,12 @@ class PoseAnalyzer:
             if left_elbow_angle < 110 and right_elbow_angle < 110:  # 팔꿈치를 충분히 굽혔을 때
                 if self.last_exercise_state["Pullup"] == "down":
                     self.last_exercise_state["Pullup"] = "up"
+                    print("Pullup: State changed to UP")
             elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 팔꿈치를 폈을 때
                 if self.last_exercise_state["Pullup"] == "up":
                     self.exercise_counts["Pullup"] += 1
                     self.last_exercise_state["Pullup"] = "down"
+                    print("Pullup: State changed to DOWN")
 
         elif detected_class == "Squat":
             # 무릎 각도로 Squat 동작 완료 감지
@@ -175,92 +193,7 @@ class PoseAnalyzer:
                     self.exercise_counts["Squat"] += 1
                     self.last_exercise_state["Squat"] = "up"
 
-        elif detected_class == "Dips":
-            # 어깨와 팔꿈치 각도로 Dips 동작 완료 감지
-            left_elbow_angle = self.calculate_angle(
-                landmarks[5], landmarks[7], landmarks[9]
-            )
-            right_elbow_angle = self.calculate_angle(
-                landmarks[6], landmarks[8], landmarks[10]
-            )
-
-            if left_elbow_angle < 100 and right_elbow_angle < 100:  # 내려간 상태
-                if self.last_exercise_state["Dips"] == "up":
-                    self.last_exercise_state["Dips"] = "down"
-            elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 올라온 상태
-                if self.last_exercise_state["Dips"] == "down":
-                    self.exercise_counts["Dips"] += 1
-                    self.last_exercise_state["Dips"] = "up"
-
-        elif detected_class == "Pushup":
-            # 팔꿈치 각도로 Pushup 동작 완료 감지
-            left_elbow_angle = self.calculate_angle(
-                landmarks[5], landmarks[7], landmarks[9]
-            )
-            right_elbow_angle = self.calculate_angle(
-                landmarks[6], landmarks[8], landmarks[10]
-            )
-
-            if left_elbow_angle < 100 and right_elbow_angle < 100:  # 내려간 상태
-                if self.last_exercise_state["Pushup"] == "up":
-                    self.last_exercise_state["Pushup"] = "down"
-            elif left_elbow_angle > 140 and right_elbow_angle > 140:  # 올라온 상태
-                if self.last_exercise_state["Pushup"] == "down":
-                    self.exercise_counts["Pushup"] += 1
-                    self.last_exercise_state["Pushup"] = "up"
-
-        elif detected_class == "Deadlift":
-            # 힙 각도로 Deadlift 동작 완료 감지
-            # 무릎 각도로 Squat 동작 완료 감지
-            left_knee_angle = self.calculate_angle(
-                landmarks[11], landmarks[13], landmarks[15]
-            )
-            right_knee_angle = self.calculate_angle(
-                landmarks[12], landmarks[14], landmarks[16]
-            )
-
-            if left_knee_angle < 120 and right_knee_angle < 120:  # 내려간 상태
-                if self.last_exercise_state["Deadlift"] == "up":
-                    self.last_exercise_state["Deadlift"] = "down"
-            elif left_knee_angle > 160 and right_knee_angle > 160:  # 올라온 상태
-                if self.last_exercise_state["Deadlift"] == "down":
-                    self.exercise_counts["Deadlift"] += 1
-                    self.last_exercise_state["Deadlift"] = "up"
-
-        elif detected_class == "Side Lateral Raise":
-            # 어깨와 손목 각도로 Side Lateral Raise 동작 감지
-            left_arm_angle = self.calculate_angle(
-                landmarks[7], landmarks[5], landmarks[11]
-            )
-            right_arm_angle = self.calculate_angle(
-                landmarks[8], landmarks[6], landmarks[12]
-            )
-
-            if left_arm_angle > 70 and right_arm_angle > 70:  # 올라간 상태
-                if self.last_exercise_state["Side Lateral Raise"] == "down":
-                    self.last_exercise_state["Side Lateral Raise"] = "up"
-
-            elif left_arm_angle <= 50 and right_arm_angle <= 50:  # 내려간 상태
-                if self.last_exercise_state["Side Lateral Raise"] == "up":
-                    self.last_exercise_state["Side Lateral Raise"] = "down"
-                    self.exercise_counts["Side Lateral Raise"] += 1
-
-        elif detected_class == "Curl":
-            # 팔꿈치 각도로 Curl 동작 완료 감지
-            left_elbow_angle = self.calculate_angle(
-                landmarks[5], landmarks[7], landmarks[9]
-            )
-            right_elbow_angle = self.calculate_angle(
-                landmarks[6], landmarks[8], landmarks[10]
-            )
-
-            if left_elbow_angle < 60 or right_elbow_angle < 60:  # 굽힘 상태
-                if self.last_exercise_state["Curl"] == "down":
-                    self.last_exercise_state["Curl"] = "up"
-            elif left_elbow_angle > 100 or right_elbow_angle > 100:  # 폄 상태
-                if self.last_exercise_state["Curl"] == "up":
-                    self.exercise_counts["Curl"] += 1
-                    self.last_exercise_state["Curl"] = "down"
+        # 다른 운동도 유사한 방식으로 추가 가능
 
         return self.exercise_counts
 
@@ -308,12 +241,12 @@ class PoseAnalyzer:
         neck_balance_diff = abs(left_neck_angle - right_neck_angle)
         
         # 피드백 조건
-        if neck_balance_diff > 10:
-            feedback.append("Maintain neck balance. Adjust your posture.")
+        if neck_balance_diff > 20:
+            feedback.append("Maintain neck balance. Adjust your posture.")  # 목 균형을 유지하세요.
          
         # 허리 각도 피드백
-        if back_angle < 170 or back_angle > 185:
-            feedback.append("Keep your back straight.")
+        if back_angle < 165 or back_angle > 185:
+            feedback.append("Keep your back straight.")  # 허리를 곧게 펴세요.
 
         if last_class_name == "Pullup":
             # 팔꿈치 각도 계산
@@ -329,10 +262,10 @@ class PoseAnalyzer:
             )
 
             # 피드백 생성
-            if self.last_exercise_state["Pullup"] == "down":
-                feedback.append("Up!")
-            if self.last_exercise_state["Pullup"] == "up":        
-                feedback.append("Down!")
+            if left_elbow_angle > 160 or right_elbow_angle > 160:
+                feedback.append("Bend your elbows more.")  # 팔꿈치를 더 굽히세요.
+            if left_elbow_angle < 90 or right_elbow_angle < 90:
+                feedback.append("Your elbows are bent too much.")  # 팔꿈치를 너무 많이 굽혔습니다.
 
         elif last_class_name == "Squat":
             # 무릎 각도 계산
@@ -349,7 +282,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_knee_angle < 70 or right_knee_angle < 70:
-                feedback.append("Your knees are bent too much.")
+                feedback.append("Your knees are bent too much.")  # 무릎이 너무 많이 굽혀졌습니다.
 
         elif last_class_name == "Deadlift":
             # 무릎 각도 계산
@@ -366,7 +299,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_knee_angle > 90 or right_knee_angle > 90:
-                feedback.append("Do not bend your knees too much.")
+                feedback.append("Do not bend your knees too much.")  # 무릎을 너무 많이 굽히지 마세요.
 
         elif last_class_name == "Pushup":
             # 팔꿈치 각도 계산
@@ -383,7 +316,7 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_elbow_angle < 90 or right_elbow_angle < 90:
-                feedback.append("Your elbows are bent too much.")
+                feedback.append("Your elbows are bent too much.")  # 팔꿈치가 너무 많이 굽혀졌습니다.
 
         elif last_class_name == "Dips":
             # 팔꿈치 각도 계산
@@ -400,9 +333,9 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_elbow_angle > 120 or right_elbow_angle > 120:
-                feedback.append("Lower yourself further.")
+                feedback.append("Lower yourself further.")  # 몸을 더 낮추세요.
             if left_elbow_angle < 70 or right_elbow_angle < 70:
-                feedback.append("Do not go too low.")
+                feedback.append("Do not go too low.")  # 너무 낮추지 마세요.
 
         elif last_class_name == "Side Lateral Raise":
             # 팔 각도 계산
@@ -419,9 +352,9 @@ class PoseAnalyzer:
 
             # 피드백 생성
             if left_shoulder_angle < 80 or right_shoulder_angle < 80:
-                feedback.append("Lift your arms higher.")
+                feedback.append("Lift your arms higher.")  # 팔을 더 높이 들어올리세요.
             if left_shoulder_angle > 120 or right_shoulder_angle > 120:
-                feedback.append("Do not lift your arms too high.")
+                feedback.append("Do not lift your arms too high.")  # 팔을 너무 높이 들지 마세요.
 
         elif last_class_name == "Curl":
             # 팔꿈치 각도 계산
@@ -437,12 +370,11 @@ class PoseAnalyzer:
             )
 
             # 피드백 생성
-            if self.last_exercise_state["Pullup"] == "down":
-                if left_elbow_angle > 160 or right_elbow_angle > 160:
-                   feedback.append("Lower the weights more.")
-            if self.last_exercise_state["Pullup"] == "down":
-                if left_elbow_angle < 30 or right_elbow_angle < 30:
-                    feedback.append("Do not curl your arms too much.")
+            if left_elbow_angle > 160 or right_elbow_angle > 160:
+                feedback.append("Lower the weights more.")  # 팔을 더 내리세요.
+            if left_elbow_angle < 30 or right_elbow_angle < 30:
+                feedback.append("Do not curl your arms too much.")  # 팔을 너무 많이 굽히지 마세요.
+
         return feedback
     
     def get_feedback(self, landmarks, detected_class):
@@ -465,10 +397,9 @@ class PoseClassifier:
         self.sequence = deque(maxlen=self.sequence_length)
 
         self.state = 'idle'  # 상태: idle / active
-        self.idle_start_time = time.time()  # idle 상태 시작 시간 초기화
         self.last_movement_time = time.time()
         self.last_prediction_time = 0
-        self.movement_threshold = 5  # 움직임 감지 임계값
+        self.movement_threshold = 10  # 움직임 감지 임계값
         self.inactivity_timeout = 5  # 초 단위
 
         # 마지막 예측 클래스 및 피드백
@@ -512,7 +443,6 @@ class PoseClassifier:
 
             if current_time - self.last_movement_time > self.inactivity_timeout:
                 self.state = 'idle'
-                self.idle_start_time = current_time  # idle 상태 시작 시간 갱신
                 self.sequence.clear()
                 self.last_detected_class = None
                 self.last_feedback = []
@@ -531,13 +461,13 @@ class PoseClassifier:
         return self.last_detected_class
 
 
-
 class PoseVisualization:
     def __init__(self, image_width, image_height):
         self.image_width = image_width
         self.image_height = image_height
 
-    def draw_results(self, frame, extracted_landmarks, hip_x, hip_y, detected_class, state, feedback, exercise_counts, idle_duration):
+    def draw_results(self, frame, extracted_landmarks, hip_x, hip_y, detected_class, state, feedback, exercise_counts):
+
         if extracted_landmarks is None or len(extracted_landmarks) == 0:
         # 랜드마크가 없으면 원본 프레임 그대로 반환
             return frame
@@ -556,6 +486,7 @@ class PoseVisualization:
         # 상태에 따라 색상 변경 (활성화: 녹색, 비활성화: 회색)
         state_color = (0, 255, 0) if state == "active" else (128, 128, 128)
         draw.text((10, 50), f"State: {state.capitalize()}", font=font, fill=state_color)
+
 
         # 피드백에 따라 강조할 랜드마크 인덱스 설정
         feedback_mapping = {
@@ -625,6 +556,7 @@ class PoseVisualization:
             draw.line([(start_x, start_y), (end_x, end_y)], fill=(255, 0, 0), width=3)
 
 
+
         # 랜드마크 점 찍기 (얼굴 랜드마크 인덱스 제외)
         excluded_indices = [0, 1, 2, 3, 4]
         for idx, coord in enumerate(extracted_landmarks):
@@ -651,10 +583,6 @@ class PoseVisualization:
             draw.text((10, y_offset), message, font=font, fill=(255, 255, 0))
             y_offset += 40
 
-        # Idle Duration 출력
-        if state == "idle":
-            draw.text((10, 150), f"Resting: {idle_duration} seconds", font=font, fill=(255, 255, 0))
-
         # 운동별 카운트 표시
         y_offset = 300
         for exercise, count in exercise_counts.items():
@@ -668,16 +596,97 @@ class PoseVisualization:
         return frame
 
 
+class DatabaseManager:
+    def __init__(self, host, user, password, database, charset='utf8mb4'):
+        self.connection = pymysql.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database,
+            charset=charset,  # 추가
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        self.cursor = self.connection.cursor()
+
+    def get_exercise_id(self, exercise_name):
+        sql = "SELECT exercise_id FROM exercise_list WHERE exercise_name = %s"
+        self.cursor.execute(sql, (exercise_name,))
+        result = self.cursor.fetchone()
+        return result['exercise_id'] if result else None
+
+    def insert_exercise_time_log(self, user_id):
+        sql = """
+        INSERT INTO exercise_time_log (user_id, performed_at)
+        VALUES (%s, NOW())
+        """
+        self.cursor.execute(sql, (user_id,))
+        self.connection.commit()
+        return self.cursor.lastrowid  # 생성된 exercise_time_id 반환
+
+    def insert_exercise_record(self, exercise_time_id, exercise_id, exercise_cnt):
+        sql = """
+        INSERT INTO exercise_record (exercise_time_id, exercise_id, exercise_cnt)
+        VALUES (%s, %s, %s)
+        """
+        self.cursor.execute(sql, (exercise_time_id, exercise_id, exercise_cnt))
+        self.connection.commit()
+
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
+
+
 class PoseTrackingApp:
-    def __init__(self, model_path, class_names):
+    def __init__(self, model_path, class_names, user_id):
+        self.db_manager = DatabaseManager(
+            host='database-1.cbcw28i2we7h.us-east-2.rds.amazonaws.com',
+            user='kj',
+            password='1234',
+            database='nahonlab',
+            charset='utf8mb4'
+        )
         self.landmark_extractor = LandmarkExtractor()
         self.pose_classifier = PoseClassifier(model_path, class_names)
-        self.pose_analyzer = PoseAnalyzer()
+        self.pose_analyzer = None  # PoseAnalyzer를 나중에 초기화
         self.pose_visualizer = None
         self.last_feedback = []
+        self.user_id = user_id  # 사용자 ID 저장
+        self.exercise_time_id = None  # 운동 세션 ID
+        self.exercise_counts = {  # 운동별 카운트 초기화
+            'Dips': 0,
+            'Pullup': 0,
+            'Pushup': 0,
+            'Squat': 0,
+            'Deadlift': 0,
+            'Side Lateral Raise': 0,
+            'Curl': 0,
+        }
+
+    def start_session(self):
+        # 운동 세션 시작 시 exercise_time_log에 저장
+        self.exercise_time_id = self.db_manager.insert_exercise_time_log(self.user_id)
+        self.pose_analyzer = PoseAnalyzer(self.db_manager)  # DB 매니저 전달
+        print(f"Exercise session started with ID: {self.exercise_time_id}")
+
+    def save_exercise_records(self):
+        # 운동 기록을 한꺼번에 저장
+        print("Saving all exercise records to the database...")
+        for exercise_name, count in self.pose_analyzer.exercise_counts.items():
+            if count > 0:  # 카운트가 0보다 큰 경우에만 저장
+                exercise_id = self.db_manager.get_exercise_id(exercise_name)
+                if exercise_id:
+                    print(f"Saving exercise: {exercise_name}, ID: {exercise_id}, Count: {count}")
+                    self.db_manager.insert_exercise_record(
+                        self.exercise_time_id,
+                        exercise_id,
+                        count
+                    )
+                else:
+                    print(f"Exercise ID not found for: {exercise_name}")
 
     def run(self):
-        video_path = "../video/curl.webm"
+        self.start_session()  # 세션 시작
+        video_path = "../video/고1 풀업 자세맞나요？ [LIzOX_2rKos].webm"
         cap = cv2.VideoCapture(0)
         print("웹캠 시작... 종료하려면 'q'를 누르세요.")
 
@@ -696,9 +705,8 @@ class PoseTrackingApp:
             results = self.landmark_extractor.pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
             hip_x, hip_y = 0, 0
             detected_class = None
-            idle_duration = 0  # Idle 지속 시간 초기화
-            landmarks = np.array([])  # 초기화
 
+            landmarks = np.array([])  # 초기화
 
             if results.pose_landmarks:
                 # 랜드마크 추출 및 중심점 계산
@@ -720,11 +728,7 @@ class PoseTrackingApp:
                         self.last_feedback = self.pose_analyzer.get_feedback(landmarks, detected_class)
 
                         # 운동별 카운트 출력
-                        print(f"Exercise Counts: {exercise_counts}")
-            
-            # idle 상태일 때 지속 시간 계산
-            if self.pose_classifier.state == "idle":
-                idle_duration = int(time.time() - self.pose_classifier.idle_start_time)
+                        print(f"Exercise Counts: {self.pose_analyzer.exercise_counts}")
 
             # 결과 시각화
             frame = self.pose_visualizer.draw_results(
@@ -732,8 +736,7 @@ class PoseTrackingApp:
                 detected_class or self.pose_classifier.last_detected_class,  # 마지막 클래스 유지
                 self.pose_classifier.state, 
                 self.last_feedback if detected_class else [],  # idle 상태에서는 피드백 초기화
-                self.pose_analyzer.exercise_counts,  # 운동별 카운트 전달
-                idle_duration  # Idle Duration 전달
+                self.pose_analyzer.exercise_counts  # 운동별 카운트 전달
             )
 
             cv2.imshow('Pose Classification', frame)
@@ -743,6 +746,8 @@ class PoseTrackingApp:
         cap.release()
         cv2.destroyAllWindows()
         self.landmark_extractor.release_resources()
+        self.save_exercise_records()  # 종료 시 운동 기록 저장
+        self.db_manager.close()
 
 
 def main():
@@ -751,9 +756,10 @@ def main():
         'Dips', 'Pullup', 'Pushup', 'Squat', 
         'Deadlift', 'Side Lateral Raise', 'Curl'
     ]
-
-    app = PoseTrackingApp(MODEL_PATH, CLASS_NAMES)
+    USER_ID = 18  # 사용자의 user_id 설정
+    app = PoseTrackingApp(MODEL_PATH, CLASS_NAMES, USER_ID)
     app.run()
 
 if __name__ == "__main__":
     main()
+
