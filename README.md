@@ -97,8 +97,14 @@
 
 <img src="https://github.com/user-attachments/assets/d03357b1-282a-4cf0-bae8-e54f3f0bec55" alt="solcare_user_stat_V1" width="300"/>
 
+# 4. 결론
 
-# 4. 발표 자료
+## 4-1. 통합 테스트 결과
+
+## 4-2. 프로젝트 리뷰 및 개선점
+
+
+# 5. 발표 자료
 https://docs.google.com/presentation/d/1dvwK7o6es8Wn-Mrr18u-DYbreAsfyP4J_0AuqXVFU0I/edit?usp=sharing
 
 
