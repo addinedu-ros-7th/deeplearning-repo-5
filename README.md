@@ -10,7 +10,7 @@
 - 기존 서비스는 운동, 식단 기록을 사용자가 직접 작성해야 함
 - 운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재
 
-## 1-3. User Requirements
+## 1-3. 사용자 요구사항
 | **구분**       | **기능**                                | **설명**                                                                                 |
 |:----------------:|---------------------------------------|-----------------------------------------------------------------------------------------|
 | **식단**       | 음식 영양 성분 및 칼로리 계산 기능       | • 사용자가 업로드한 식단 사진을 분석하여 자동으로 영양성분 및 칼로리를 계산하고 제공 및 저장             |
@@ -46,23 +46,23 @@
 | **소스 버전 관리** | ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)                   |
 
 # 2. 설계
-## 2-1. Main Functions
+## 2-1. 주요 기능
 ![image](https://github.com/user-attachments/assets/496c7d39-755c-4297-ae55-dd8ff5789fd9)
 
-## 2-2. System Architecture
+## 2-2. 시스템 구성도
 ![image](https://github.com/user-attachments/assets/e0d874b7-46b2-4341-a7ce-8efe42a4988a)
 
 ## 2-3. ERD
 ![image](https://github.com/user-attachments/assets/831ba3ec-e54a-4dec-982d-b7453a00e328)</br>
 
-## 2-4. Sequence Diagram
+## 2-4. 시퀀스 다이어그램
 ![image](https://github.com/user-attachments/assets/8f55f1a4-486c-410f-9acb-d89ada9927ce)
 
-## 2-5. User Scenario
+## 2-5. 사용자 시나리오
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
- </br>
+ 
 
-## 2-6. 화면 구성도</br>
+## 2-6. 화면 구성도
 ![image](https://github.com/user-attachments/assets/adee9ac4-a820-4552-8171-0b7508ecd625)
 ![image](https://github.com/user-attachments/assets/544fa08b-6fac-4b28-aa87-fdd7c3fa4a70)
 ![image](https://github.com/user-attachments/assets/4365c18b-009d-48ec-ad70-311b20f283f5)
