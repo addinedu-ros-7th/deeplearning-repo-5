@@ -75,14 +75,30 @@
 ## 3-2. 식단 관리
 
 ## 3-3. 운동 인식 및 피드백
-### 1. 
-[상태 인식](https://github.com/user-attachments/assets/2a5bbabe-af2d-4dd9-91bc-5ca49cf9ff25")
-### 2.
-[동작 인식](https://github.com/user-attachments/assets/617e94c4-9d1b-47ed-be11-4750db8b5aa4)
-### 3. 
-[피드백, 카운팅](https://github.com/user-attachments/assets/c889f781-6e95-426f-a533-450c28cc6416)
-### 4. 
-[복합 동작 인식](https://github.com/user-attachments/assets/0c859c26-6663-4016-9322-d2b22eb33de6)
+
+### 상태 인식
+- 운동 / 휴식 상태 인식
+- 휴식 시간 측정</br>
+
+[상태 인식 보기](https://github.com/user-attachments/assets/14dc83c5-6669-4983-8d45-d9e2b370008b)
+
+### 동작 인식
+- 운동 동작 인식(딥스, 풀업, 푸시업, 스쿼트, 데드리프트, 사이드 레터럴 레이즈, 컬)
+- 동작별 횟수 측정
+- 자동 저장
+ 
+[동작 인식 보기](https://github.com/user-attachments/assets/a49b3550-5096-40bb-8dac-794fd46b0069)
+
+### 피드백
+- 운동 자세 피드백(텍스트, 음성)
+- 교정 대상 부위 시각화(빨간색)
+ 
+[피드백, 카운팅 보기](https://github.com/user-attachments/assets/88a2a680-3490-440b-93ff-80ab8b61a56c)
+
+### 복합 동작 인식
+- 복합 동작 인식
+ 
+[복합 동작 인식 보기](https://github.com/user-attachments/assets/3578543e-b998-4e4d-8694-07f19af86556)
 
 ## 3-4. 위험 상황 관리
 
