@@ -46,11 +46,6 @@
 ## 2-5. 사용자 시나리오
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
  
-## 2-6. 화면 구성도
-![image](https://github.com/user-attachments/assets/adee9ac4-a820-4552-8171-0b7508ecd625)
-![image](https://github.com/user-attachments/assets/544fa08b-6fac-4b28-aa87-fdd7c3fa4a70)
-![image](https://github.com/user-attachments/assets/4365c18b-009d-48ec-ad70-311b20f283f5)
-
 # 3. 기능
 ## 3-1. 회원 가입
 ### 기능 리스트
