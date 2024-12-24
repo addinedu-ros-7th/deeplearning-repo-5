@@ -62,8 +62,6 @@
 ![image](https://github.com/user-attachments/assets/a1c8eb59-2350-4f8b-814c-7ac822af44c5)
  </br>
 
-**[이름]**
-<br/>
 ## 2-6. 화면 구성도</br>
 ![image](https://github.com/user-attachments/assets/adee9ac4-a820-4552-8171-0b7508ecd625)
 ![image](https://github.com/user-attachments/assets/544fa08b-6fac-4b28-aa87-fdd7c3fa4a70)
