@@ -1,6 +1,10 @@
 ![image](https://github.com/user-attachments/assets/035e085e-c6a9-4e67-be6d-4700480d66dd)
 # 솔로를 위한 인공지능 헬스케어 서비스
 
+## Watch the Video
+[![AI-Powered Healthcare](https://img.youtube.com/vi/AUdVKNk_UV8/0.jpg)](https://youtube.com/shorts/AUdVKNk_UV8?si=kb7C2WoPwqL_4VAp)
+
+
 # 1. 프로젝트 소개
 ## 1-1. 목표
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
