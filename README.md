@@ -45,7 +45,7 @@
 | **협업 도구**     | ![Jira](https://img.shields.io/badge/Jira-blue?logo=jira&logoColor=white) ![Confluence](https://img.shields.io/badge/Confluence-blue?logo=confluence&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-purple?logo=slack&logoColor=white) |
 | **소스 버전 관리** | ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)                   |
 
-# 2.설계
+# 2. 설계
 ## 2-1. Main Functions
 ![image](https://github.com/user-attachments/assets/496c7d39-755c-4297-ae55-dd8ff5789fd9)
 
@@ -65,6 +65,9 @@
 **[이름]**
 <br/>
 ## 2-6. 화면 구성도</br>
+![image](https://github.com/user-attachments/assets/adee9ac4-a820-4552-8171-0b7508ecd625)
+![image](https://github.com/user-attachments/assets/544fa08b-6fac-4b28-aa87-fdd7c3fa4a70)
+![image](https://github.com/user-attachments/assets/4365c18b-009d-48ec-ad70-311b20f283f5)
 
 
 
@@ -76,13 +79,8 @@
 
 ## 3-3. 운동 인식 및 피드백
 
-### 상태 인식
-- 운동 / 휴식 상태 인식
-- 휴식 시간 측정</br>
-
-[상태 인식 보기](https://github.com/user-attachments/assets/14dc83c5-6669-4983-8d45-d9e2b370008b)
-
-### 동작 인식
+### 상태 및 동작 인식
+- 운동 / 휴식 상태 인식, 휴식 시간 측정
 - 운동 동작 인식(딥스, 풀업, 푸시업, 스쿼트, 데드리프트, 사이드 레터럴 레이즈, 컬)
 - 동작별 횟수 측정
 - 자동 저장
