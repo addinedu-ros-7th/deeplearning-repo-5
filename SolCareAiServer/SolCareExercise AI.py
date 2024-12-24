@@ -6,6 +6,7 @@ from tensorflow.keras.models import load_model
 from collections import deque
 from PIL import Image, ImageDraw, ImageFont
 import pymysql
+import pyttsx3
 
 
 class LandmarkExtractor:
@@ -662,6 +663,12 @@ class PoseTrackingApp:
             'Curl': 0,
         }
 
+        self.speech_engine = pyttsx3.init()
+        self.speech_engine.setProperty('rate', 150)  # 음성 속도 설정
+        self.last_feedback_time = time.time()
+        self.feedback_cooldown = 3.0  # 피드백 간 최소 간격(초)
+        self.last_spoken_feedback = set()  # 마지막으로 출력된 피드백 저장        
+
     def start_session(self):
         # 운동 세션 시작 시 exercise_time_log에 저장
         self.exercise_time_id = self.db_manager.insert_exercise_time_log(self.user_id)
@@ -684,10 +691,37 @@ class PoseTrackingApp:
                 else:
                     print(f"Exercise ID not found for: {exercise_name}")
 
+    def speak_feedback(self, feedback):
+        """
+        피드백 메시지를 음성으로 출력
+        """
+        current_time = time.time()
+        
+        # 현재 피드백을 set으로 변환하여 비교
+        current_feedback_set = set(feedback)
+        
+        # 이전에 출력되지 않은 새로운 피드백만 필터링
+        new_feedback = current_feedback_set - self.last_spoken_feedback
+        
+        # 충분한 시간이 지났고 새로운 피드백이 있는 경우에만 출력
+        if new_feedback and (current_time - self.last_feedback_time) >= self.feedback_cooldown:
+            print("Speaking new feedback:", new_feedback)  # 디버깅용
+            
+            for message in new_feedback:
+                try:
+                    self.speech_engine.say(message)
+                    self.speech_engine.runAndWait()
+                except Exception as e:
+                    print(f"Speech error: {e}")
+                    continue
+            
+            self.last_feedback_time = current_time
+            self.last_spoken_feedback = current_feedback_set
+
     def run(self):
         self.start_session()  # 세션 시작
-        video_path = "../video/고1 풀업 자세맞나요？ [LIzOX_2rKos].webm"
-        cap = cv2.VideoCapture(0)
+        video_path = "../video/squart1.webm"
+        cap = cv2.VideoCapture(video_path)
         print("웹캠 시작... 종료하려면 'q'를 누르세요.")
 
         while cap.isOpened():
@@ -727,8 +761,14 @@ class PoseTrackingApp:
                         exercise_counts = self.pose_analyzer.count_exercise(landmarks, detected_class)
                         self.last_feedback = self.pose_analyzer.get_feedback(landmarks, detected_class)
 
+                        current_feedback = self.pose_analyzer.get_feedback(landmarks, detected_class)
+                        
+                        # 피드백이 있을 경우에만 음성 출력 처리
+                        if current_feedback:
+                            self.speak_feedback(current_feedback)
+
                         # 운동별 카운트 출력
-                        print(f"Exercise Counts: {self.pose_analyzer.exercise_counts}")
+                        print(f"Exercise Counts: {exercise_counts}")
 
             # 결과 시각화
             frame = self.pose_visualizer.draw_results(
