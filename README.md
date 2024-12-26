@@ -76,6 +76,7 @@
 |                | 운동 자세 피드백 기능                   | • 텍스트로 피드백<br>• 음성으로 피드백<br>• 교정 부위 빨간색으로 시각화하여 피드백                 |
 |                | 운동 횟수 측정 기능                     | • 운동 종류별 횟수 측정<br>• 운동 종류별 횟수 자동 저장                                      |
 
+<img src="https://github.com/user-attachments/assets/d47fa289-09fd-413c-afdd-b2fc737d4cbd" alt="pullup_test_V2" width="300" />
 
 ## 3-4. 위험 상황 관리
 
