@@ -22,13 +22,13 @@
     </tr>
     <tr>
         <td align="center">
-            <p><strong>1인 가구의 증가 추세</strong></p>
+            <p><strong>1인 가구 증가</strong></p>
         </td>
         <td align="center">
-            <p><strong>사용자가 직접 입력해야 하는 불편함</strong></p>
+            <p><strong>직접 입력해야 하는 불편함</strong></p>
         </td>
         <td align="center">
-            <p><strong>운동, 식단, 위험 통합 관리 부재</strong></p>
+            <p><strong>통합 건강 관리 서비스 부재</strong></p>
         </td>
     </tr>
 </table>
