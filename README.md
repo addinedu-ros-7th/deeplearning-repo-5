@@ -86,8 +86,7 @@
 |:----------------:|---------------------------------------|-----------------------------------------------------------------------------------------|
 | **위험 상황**  | 위험 상황 인지 및 대처 기능              | • 위험 상황 감지(낙상)<br>• 감지 영상 저장<br>• 위험 상황 감지시 비상 연락처로 연락 |
 
-<img src="https://github.com/user-attachments/assets/f66a03b9-f42b-448e-b971-d8863c0047ce" alt="solcare_user_stat_V1" width="300"/>
-
+<img src="https://github.com/user-attachments/assets/49be0b5e-cb74-4451-b5d9-3047bc7c39b4" alt="solcare_user_stat_V1" width="300"/>
 
 ## 3-5. 통계, 추천, 예측
 
