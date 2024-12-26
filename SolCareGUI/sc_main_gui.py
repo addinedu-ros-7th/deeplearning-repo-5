@@ -295,10 +295,11 @@ class SunnyMainWindow(QMainWindow, main):
         multipliers = [float(item[3]) for item in result] 
         calories = [Decimal(value) * Decimal(multiplier) for value, multiplier in zip(values, multipliers)]
 
-        total_calories = sum(calories)
-
+        total_calories = round(sum(calories),2)
+        self.lb_kcal.setText(f"{total_calories}kcal")
+        cmap = plt.get_cmap('Blues') 
         fig, ax = plt.subplots()
-        ax.pie(values, labels=activities, autopct='%1.1f%%', startangle=90)
+        ax.pie(values, labels=activities, autopct='%1.1f%%', startangle=90,colors=cmap(np.linspace(0, 1, len(values))), textprops={'fontsize': 18})
         ax.axis('equal') 
 
         img_stream_pie = BytesIO()
@@ -594,15 +595,15 @@ class DietAnalyzePopup(QDialog):
         row_layout.addWidget(QLabel("Grams:"))
         row_layout.addWidget(grams_edit)
 
-        carb_edit = QLineEdit(carb)
+        carb_edit = QLineEdit(str(int(float(carb) * float(grams))))
         row_layout.addWidget(QLabel("탄수화물:"))
         row_layout.addWidget(carb_edit)
 
-        protein_edit = QLineEdit(protein)
+        protein_edit = QLineEdit(str(int(float(protein) * float(grams))))
         row_layout.addWidget(QLabel("단백질:"))
         row_layout.addWidget(protein_edit)
 
-        fat_edit = QLineEdit(fat)
+        fat_edit = QLineEdit(str(int(float(fat) * float(grams))))
         row_layout.addWidget(QLabel("지방:"))
         row_layout.addWidget(fat_edit)
 
@@ -708,24 +709,67 @@ class SunnyFoodCameraWindow(QMainWindow, food_camera):
         messages = ["RequestDietAnalyze"]
         response = requestTCP(messages, img=self.frame, iscamera=True)
         food_result = response 
+        print(food_result)
 
         popup = DietAnalyzePopup(food_result)
         if popup.exec_() == QDialog.Accepted: 
             updated_values = []
+
+            total_calories = 0
+            total_carb = 0
+            total_prot = 0
+            total_fat = 0
+
+            carb_percent = 0
+            prot_percent = 0
+            fat_percent = 0
+
             for feature, grams, carb, protein, fat in popup.input_fields:
+                print(feature, grams, carb, protein, fat)
                 grams_value = float(grams.text())
                 carb_value = float(carb.text())
                 protein_value = float(protein.text())
                 fat_value = float(fat.text())
+                print(feature, grams_value, carb_value, protein_value, fat_value)
                 
-                total_calories = grams_value * (carb_value * 4 + protein_value * 4 + fat_value * 9)
+                total_calories += (carb_value * 4 + protein_value * 4 + fat_value * 9)
+                total_carb += carb_value
+                total_prot += protein_value
+                total_fat += fat_value
+
+            carb_percent = total_carb * 4 / total_calories
+            prot_percent = total_prot * 4 / total_calories
+            fat_percent = total_fat * 9 / total_calories
+        
+
                 
-                updated_values.append({
-                    "": feature,
-                    "총 칼로리": round(total_calories,2)
-                })
-     
-            QMessageBox.information(self, 'Calculation Complete', str(updated_values))
+            updated_values.append({
+                "총 칼로리": round(total_calories,2),
+
+                "탄(g)": round(total_carb,2),
+                "탄(%)": round(carb_percent,2),
+
+                "단(g)": round(total_prot,2),
+                "단(%)": round(prot_percent,2),
+
+                "지(g)": round(total_fat,2),
+                "지(%)": round(fat_percent,2),
+            })
+
+            s = f"""
+                총 칼로리": {round(total_calories,2)}
+
+                탄(g): {round(total_carb,2)}
+                탄(%): {round(carb_percent,2)}
+
+                단(g): {round(total_prot,2)}
+                단(%): {round(prot_percent,2)}
+
+                지(g): {round(total_fat,2)}
+                지(%): {round(fat_percent,2)}
+                """
+                
+            QMessageBox.information(self, 'Calculation Complete', s)
 
 class SunnyProfileWindow(QMainWindow, profile):
     def __init__(self, control):
