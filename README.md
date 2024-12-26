@@ -25,10 +25,10 @@
             <p><strong>1인 가구의 증가 추세</strong></p>
         </td>
         <td align="center">
-            <p><strong>사용자가 직접 입력해야 하는 번거로움</strong></p>
+            <p><strong>사용자가 직접 입력해야 하는 불편함</strong></p>
         </td>
         <td align="center">
-            <p><strong>운동, 식단, 위험 요소의 통합 관리 부재</strong></p>
+            <p><strong>운동, 식단, 위험 통합 관리 부재</strong></p>
         </td>
     </tr>
 </table>
