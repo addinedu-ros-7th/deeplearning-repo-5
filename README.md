@@ -25,7 +25,7 @@
             <p><strong>1인 가구 증가</strong></p>
         </td>
         <td align="center">
-            <p><strong>직접 입력해야 하는 불편함</strong></p>
+            <p><strong>직접 입력해야 하는 기존 서비스</strong></p>
         </td>
         <td align="center">
             <p><strong>통합 건강 관리 서비스 부재</strong></p>
