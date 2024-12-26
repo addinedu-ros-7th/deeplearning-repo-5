@@ -8,20 +8,34 @@
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
 
 ## 1-2. 주제 선정 배경
-<div align="center">
-    <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="solcare_user_stat_V1" width="450"/>
-    <p><strong>1인 가구의 증가 추세</strong></p>
-</div>
+<table align="center">
+    <tr>
+        <td align="center">
+            <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="1인 가구의 증가 추세" width="300"/>
+        </td>
+        <td align="center">
+            <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="사용자가 직접 입력해야 하는 번거로움" width="300"/>
+        </td>
+        <td align="center">
+            <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="운동, 식단, 위험 요소의 통합 관리 부재" width="300"/>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <p><strong>1인 가구의 증가 추세</strong></p>
+        </td>
+        <td align="center">
+            <p><strong>사용자가 직접 입력해야 하는 번거로움</strong></p>
+        </td>
+        <td align="center">
+            <p><strong>운동, 식단, 위험 요소의 통합 관리 부재</strong></p>
+        </td>
+    </tr>
+</table>
 
-<div align="center">
-    <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="solcare_user_stat_V1" width="450"/>
-    <p><strong>사용자가 직접 운동, 식단 기록 해야 하는 기존 서비스의 불편함</strong></p>
-</div>
 
-<div align="center">
-    <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="solcare_user_stat_V1" width="450"/>
-    <p><strong>운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재</strong></p>
-</div>
+
+
 
  최근 발표된 통계청 자료에 따르면, 2050년까지 1인 가구가 증가하여 전체 인구의 약 40%를 차지할 것으로 예상된다고 한다. 이에 따라 1인 식단 관리, 운동 등 헬스케어 관련 서비스들이 점차 증가하고 있다. 하지만 기존 식단 관리 서비스는 사용자가 직접 데이터를 입력해야 하는 번거로움이 있고, 운동 케어 서비스는 실시간으로 자세 피드백을 제공받기 어렵다는 한계가 있다. 또한, 혼자 사는 사람들이 낙상과 같은 사고를 겪을 경우 신속하게 대처하기 어렵다는 문제도 있다. 이러한 점을 해결하기 위해 NahonLab 팀은 딥러닝 기술을 활용한 운동, 식단, 건강 관리 기능을 통합한 서비스를 개발하려 한다.
 
