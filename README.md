@@ -9,17 +9,17 @@
 
 ## 1-2. 주제 선정 배경
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="solcare_user_stat_V1" width="600"/>
+    <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="solcare_user_stat_V1" width="450"/>
     <p><strong>1인 가구의 증가 추세</strong></p>
 </div>
 
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="solcare_user_stat_V1" width="600"/>
+    <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="solcare_user_stat_V1" width="450"/>
     <p><strong>사용자가 직접 운동, 식단 기록 해야 하는 기존 서비스의 불편함</strong></p>
 </div>
 
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="solcare_user_stat_V1" width="600"/>
+    <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="solcare_user_stat_V1" width="450"/>
     <p><strong>운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재</strong></p>
 </div>
 
