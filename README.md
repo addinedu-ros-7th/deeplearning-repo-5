@@ -14,7 +14,7 @@
             <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="1인 가구 증가 추세" width="300"/>
         </td>
         <td align="center">
-            <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="사용자가 직접 입력해야 하는 불편함" width="300"/>
+            <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="사용자가 직접 입력해야 하는 기존 서비스" width="300"/>
         </td>
         <td align="center">
             <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="운동, 식단, 위험 통합 관리 부재" width="300"/>
