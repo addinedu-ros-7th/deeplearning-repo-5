@@ -8,12 +8,23 @@
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
 
 ## 1-2. 주제 선정 배경
-<img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="solcare_user_stat_V1" width="600"/>
-<img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="solcare_user_stat_V1" width="600"/>
-<img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="solcare_user_stat_V1" width="600"/>
-- 1인 가구의 증가 추세
-- 사용자가 직접 운동, 식단 기록 해야 하는 기존 서비스의 불편함
-- 운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/77cb9819-889d-4405-a102-508dab830497" alt="solcare_user_stat_V1" width="600"/>
+    <p><strong>1인 가구의 증가 추세</strong></p>
+</div>
+
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/1b72f7fe-e6e0-4e7d-9575-6ada1c015f36" alt="solcare_user_stat_V1" width="600"/>
+    <p><strong>사용자가 직접 운동, 식단 기록 해야 하는 기존 서비스의 불편함</strong></p>
+</div>
+
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/d7168063-9a82-4169-8809-5e12fcabe6ff" alt="solcare_user_stat_V1" width="600"/>
+    <p><strong>운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재</strong></p>
+</div>
+
+
+
 
 최근 발표한 통계청 자료에 의하면 2050년까지 1인 가구가 점차 늘어 전체 인구의 약 40% 비율을 1인가구가 차지할 것으로 예측하였습니다.
 그래서 최근 1인 관리 서비스들이 늘어나고 있습니다. 대표적으로 운동 기록 서비스 어플인 Burnfit, 식단 관리 서비스 어플인 Mealligram이 있습니다.</br></br>
