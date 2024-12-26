@@ -7,202 +7,213 @@
     <x>0</x>
     <y>0</y>
     <width>393</width>
-    <height>852</height>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="btn_camera_shutter">
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QLineEdit" name="le_UserFat">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>680</y>
-     <width>70</width>
-     <height>70</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-border-image: url(:/images/img//Aperture.jpg);
-border: 1px solid #2E7D32;
-border-radius: 5px; 
-padding: 5px;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_home">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>800</y>
-     <width>35</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-border-image: url(:/images/img//home.png);
-border: 1px solid #2E7D32;
-border-radius: 5px; 
-padding: 5px;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_camera">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>790</y>
-     <width>50</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-border-image: url(:/images/img//VideoStabilization.png);
-border: 1px solid #2E7D32;
-border-radius: 5px; 
-padding: 5px;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>781</y>
-     <width>393</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(34, 39, 44);
-border-top-right-radius: 14px;
-border-top-left-radius: 14px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_webcam">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>393</width>
-     <height>791</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img//try-this-trainer-approved-chest-day-workout.jpg);
-</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_shutter_effect">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>393</width>
-     <height>781</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_file">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>720</y>
-     <width>40</width>
+     <x>30</x>
+     <y>400</y>
+     <width>310</width>
      <height>40</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img/Add_Image.png);</string>
-   </property>
-   <property name="text">
-    <string/>
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_camera_box">
+  <widget class="QLineEdit" name="le_UserWeight">
    <property name="geometry">
     <rect>
-     <x>325</x>
-     <y>714</y>
-     <width>50</width>
-     <height>50</height>
+     <x>30</x>
+     <y>330</y>
+     <width>310</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 10px</string>
-   </property>
-   <property name="text">
-    <string/>
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_DynamicIsland">
+  <widget class="QLineEdit" name="le_Usersm">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>10</y>
-     <width>122</width>
+     <x>30</x>
+     <y>480</y>
+     <width>310</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #E5E5E5;
+color: rgb(107, 107, 107);
+border-radius: 15px</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>310</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>몸무게</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>380</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>체지방률</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>460</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>골격근량</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_User_Name">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>261</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BM Dohyeon</family>
+     <pointsize>24</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>나의 목표</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>230</y>
+     <width>291</width>
      <height>36</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);
-border-radius: 18px</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="2">
+     <widget class="QDateEdit" name="de_to">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);</string>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QDateEdit" name="de_from">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(0, 0, 0);</string>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::PlusMinus</enum>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QPushButton" name="btn_profile">
+  <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>800</y>
+     <x>40</x>
+     <y>200</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(199, 199, 199)
+</string>
+   </property>
+   <property name="text">
+    <string>목표 기간</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_save">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>730</y>
+     <width>290</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
+color: white;
+border-radius: 10px; 
+padding: 5px;
+</string>
+   </property>
+   <property name="text">
+    <string>저장</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_back">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
      <width>35</width>
      <height>35</height>
     </rect>
@@ -303,7 +314,7 @@ border-radius: 18px</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
-border-image: url(:/images/img//User.png);
+background-image: url(:/images/img/Back.png);
 background-color: rgb(255, 255, 255,0);
 border-radius: 5px; 
 padding: 5px;
@@ -313,19 +324,7 @@ padding: 5px;
     <string/>
    </property>
   </widget>
-  <zorder>lb_webcam</zorder>
-  <zorder>lb_shutter_effect</zorder>
-  <zorder>lb_menubar</zorder>
-  <zorder>btn_home</zorder>
-  <zorder>btn_camera</zorder>
-  <zorder>btn_camera_shutter</zorder>
-  <zorder>lb_camera_box</zorder>
-  <zorder>btn_file</zorder>
-  <zorder>lb_DynamicIsland</zorder>
-  <zorder>btn_profile</zorder>
  </widget>
- <resources>
-  <include location="resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

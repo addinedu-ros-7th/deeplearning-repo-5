@@ -1,7 +1,11 @@
 <RCC>
   <qresource prefix="images">
+    <file>img/ai.jpg</file>
     <file>img/Siren.png</file>
+    <file>img/ai.jpg</file>
+    <file>img/ai.jpg</file>
     <file>img/PTZ Camera.png</file>
+    <file>img/profile_menu.png</file>
     <file>img/User.png</file>
     <file>img/Back.png</file>
     <file>img/ad_frame.mp4</file>
@@ -12,8 +16,8 @@
     <file>img/profile_menu.png</file>
     <file>img/sunny_food_photo2TCP.jpg</file>
     <file>img/profile.jpg</file>
-    <file>img/logo.jpg</file>
     <file>img/home.png</file>
+    <file>img/logo.jpg</file>
     <file>img/DietCamera.jpg</file>
     <file>img/Aperture.jpg</file>
     <file>img/Add_Image.png</file>

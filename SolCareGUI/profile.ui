@@ -23,7 +23,7 @@ background-color: rgb(255, 255, 255);
    <property name="geometry">
     <rect>
      <x>26</x>
-     <y>343</y>
+     <y>133</y>
      <width>342</width>
      <height>438</height>
     </rect>
@@ -35,11 +35,11 @@ background-color: rgb(255, 255, 255);
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_MY">
+  <widget class="QPushButton" name="btn_statistics">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>380</y>
+     <y>170</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -52,41 +52,6 @@ background-color: rgb(255, 255, 255);
    </property>
    <property name="text">
     <string/>
-   </property>
-  </widget>
-  <widget class="QWidget" name="widget_3" native="true">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>349</width>
-     <height>185</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(222, 222, 222);</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>261</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BM Dohyeon</family>
-     <pointsize>24</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>오늘의 운동량</string>
    </property>
   </widget>
   <widget class="QLabel" name="lb_DynamicIsland">
@@ -316,7 +281,7 @@ padding: 5px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(48, 79, 254);
+    <string notr="true">background-color: rgb(34, 39, 44);
 border-top-right-radius: 14px;
 border-top-left-radius: 14px;</string>
    </property>
@@ -324,16 +289,54 @@ border-top-left-radius: 14px;</string>
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="btn_target">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255,0);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_bodymetrics">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>250</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255,0);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>label_5</zorder>
   <zorder>lb_menu</zorder>
-  <zorder>btn_MY</zorder>
-  <zorder>widget_3</zorder>
-  <zorder>label</zorder>
+  <zorder>btn_statistics</zorder>
   <zorder>lb_DynamicIsland</zorder>
   <zorder>btn_security</zorder>
   <zorder>btn_camera</zorder>
   <zorder>btn_home</zorder>
   <zorder>btn_profile</zorder>
+  <zorder>btn_target</zorder>
+  <zorder>btn_bodymetrics</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

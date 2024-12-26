@@ -19,78 +19,19 @@ background-color: rgb(255, 255, 255);
 
 </string>
   </property>
-  <widget class="QLabel" name="lb_webcam">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>353</width>
-     <height>563</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-image: url(:/images/img/try-this-trainer-approved-chest-day-workout.jpg);
-border-radius: 18px; 
-</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_weighlifting">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>90</y>
-     <width>150</width>
-     <height>40</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BM Dohyeon</family>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
-
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(254,253,205,1), stop:1 rgba(163,230,255,1));
-	color: rgb(255, 255, 255);
-            border-radius: 5px; 
-            padding: 5px;
-}
-QPushButton:hover {
-            background-color: #EAEAEA; 
-}
-QPushButton:pressed {
-            background-color: #EAEAEA;
-}</string>
-   </property>
-   <property name="text">
-    <string>WEIGHTLEFTING</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btn_cardio">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>90</y>
-     <width>150</width>
-     <height>40</height>
+     <y>190</y>
+     <width>330</width>
+     <height>201</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>BM Dohyeon</family>
+     <pointsize>24</pointsize>
     </font>
    </property>
    <property name="cursor">
@@ -99,9 +40,9 @@ QPushButton:pressed {
    <property name="styleSheet">
     <string notr="true">QPushButton {
 
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(62,147,252,0.57), stop:1 rgba(239,183,192,0.44));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(41, 0, 40, 255), stop:1 rgba(26, 174, 172, 255));
 	color: rgb(255, 255, 255);
-            border-radius: 5px; 
+            border-radius: 16px; 
             padding: 5px;
 }
 QPushButton:hover {
@@ -112,7 +53,7 @@ QPushButton:pressed {
 }</string>
    </property>
    <property name="text">
-    <string>CARDIO</string>
+    <string>운동시작</string>
    </property>
   </widget>
   <widget class="QLabel" name="lb_DynamicIsland">
@@ -317,7 +258,7 @@ padding: 5px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(48, 79, 254);
+    <string notr="true">background-color: rgb(34, 39, 44);
 border-top-right-radius: 14px;
 border-top-left-radius: 14px;</string>
    </property>
@@ -325,14 +266,92 @@ border-top-left-radius: 14px;</string>
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="lb_logo">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>60</y>
+     <width>220</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/images/img/logo.jpg);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>:/images/logo.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_user_today">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>520</y>
+     <width>181</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCssParser::parseColorValue: Specified color without alpha value but alpha given: 'rgb 255, 255, 255,0'</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_user_kcal_cons">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>520</y>
+     <width>131</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCssParser::parseColorValue: Specified color without alpha value but alpha given: 'rgb 255, 255, 255,0'</string>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>460</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>BM Dohyeon</family>
+     <pointsize>24</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>오늘의 운동량</string>
+   </property>
+  </widget>
   <zorder>label_5</zorder>
-  <zorder>lb_webcam</zorder>
-  <zorder>btn_weighlifting</zorder>
   <zorder>btn_cardio</zorder>
   <zorder>lb_DynamicIsland</zorder>
   <zorder>btn_home</zorder>
   <zorder>btn_profile</zorder>
   <zorder>btn_camera</zorder>
+  <zorder>lb_logo</zorder>
+  <zorder>lb_user_today</zorder>
+  <zorder>lb_user_kcal_cons</zorder>
+  <zorder>label_2</zorder>
  </widget>
  <resources>
   <include location="resource.qrc"/>

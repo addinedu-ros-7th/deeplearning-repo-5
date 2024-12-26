@@ -261,8 +261,8 @@ border-radius: 15px</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(173, 247, 242, 255), stop:1 rgba(21, 170, 255, 255));
-color: black;              
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
+color: white;
 border-radius: 10px; 
 padding: 5px;
 </string>

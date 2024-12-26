@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>393</width>
-    <height>852</height>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,82 +35,28 @@
     <string notr="true">color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
-    <string>김선웅님 분석</string>
+    <string>체성분</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="lb_bodymetrics">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>510</y>
-     <width>260</width>
-     <height>30</height>
+     <x>30</x>
+     <y>420</y>
+     <width>340</width>
+     <height>261</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <family>BM Dohyeon</family>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
-   </property>
    <property name="text">
-    <string>칼로리 소비</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>160</y>
-     <width>101</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BM Dohyeon</family>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);
-</string>
-   </property>
-   <property name="text">
-    <string>날짜 선택</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>280</y>
-     <width>260</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>BM Dohyeon</family>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
-   </property>
-   <property name="text">
-    <string>운동량</string>
+    <string>TextLabel</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>200</y>
-     <width>361</width>
+     <x>50</x>
+     <y>340</y>
+     <width>291</width>
      <height>36</height>
     </rect>
    </property>
@@ -143,21 +89,24 @@
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="lb_DynamicIsland">
+  <widget class="QPushButton" name="btn_analytics">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>10</y>
-     <width>122</width>
-     <height>36</height>
+     <x>50</x>
+     <y>730</y>
+     <width>290</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);
-border-radius: 18px</string>
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
+color: white;
+border-radius: 10px; 
+padding: 5px;
+</string>
    </property>
    <property name="text">
-    <string/>
+    <string>분석</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_back">
@@ -275,127 +224,25 @@ padding: 5px;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_use_ex_analytics">
+  <widget class="QPushButton" name="btn_met">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>310</y>
-     <width>250</width>
-     <height>190</height>
+     <x>50</x>
+     <y>180</y>
+     <width>290</width>
+     <height>101</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QCssParser::parseColorValue: Specified color without alpha value but alpha given: 'rgb 255, 255, 255,0'</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_use_ex">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>310</y>
-     <width>100</width>
-     <height>190</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QCssParser::parseColorValue: Specified color without alpha value but alpha given: 'rgb 255, 255, 255,0'</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_reset">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>240</y>
-     <width>361</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>NanumGothic Eco</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
-color: white;           
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 6, 12, 255), stop:1 rgba(26, 78, 86, 255));
+background-image: url(:/images/img/ai.jpg);
+color: white;
 border-radius: 10px; 
 padding: 5px;
 </string>
    </property>
    <property name="text">
-    <string>분석 시작</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_mealAI">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>760</y>
-     <width>141</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>NanumGothic Eco</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
-color: white;           
-border-radius: 10px; 
-padding: 5px;
-</string>
-   </property>
-   <property name="text">
-    <string>식단 추천</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btn_exAI">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>760</y>
-     <width>141</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>NanumGothic Eco</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(74, 74, 74, 255), stop:1 rgba(3, 3, 3, 255));
-color: white;           
-border-radius: 10px; 
-padding: 5px;
-</string>
-   </property>
-   <property name="text">
-    <string>운동 추천</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_use_meal_analytics">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>540</y>
-     <width>340</width>
-     <height>190</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QCssParser::parseColorValue: Specified color without alpha value but alpha given: 'rgb 255, 255, 255,0'</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
+    <string>나의 1달후 체성분 예측하기</string>
    </property>
   </widget>
  </widget>
