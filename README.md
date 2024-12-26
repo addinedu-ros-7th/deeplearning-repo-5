@@ -8,9 +8,7 @@
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
 
 ## 1-2. 주제 선정 배경
-![resized_image1](https://github.com/user-attachments/assets/9e0defec-5265-44ed-83b8-b19180ddfa0e)
-![resized_image2](https://github.com/user-attachments/assets/72f0b88f-c349-409e-91aa-cb8bebc7dfa2)
-
+![Screenshot from 2024-12-26 14-09-25](https://github.com/user-attachments/assets/93e342cf-d736-40bb-b5fc-1afbf7224505)
 - 1인 가구의 증가 추세
 - 사용자가 직접 운동, 식단 기록 해야 하는 기존 서비스의 불편함
 - 운동, 식단, 위험 요소를 통합 관리하는 서비스의 부재
