@@ -411,7 +411,7 @@ class SunnyExcerciseCamWindow(QMainWindow, excercise):
                                 w,
                                 h)
             
-            cv2.imshow('dst', dst)
+            # cv2.imshow('dst', dst)
             frame_resized = cv2.resize(dst, (393, 852))
             rgb_frame = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)
             h, w, ch = rgb_frame.shape
