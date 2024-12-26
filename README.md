@@ -1,7 +1,7 @@
 ![image](https://github.com/user-attachments/assets/035e085e-c6a9-4e67-be6d-4700480d66dd)
 # 솔로를 위한 인공지능 헬스케어 서비스
 
-## [통합 영상](https://youtube.com/shorts/AUdVKNk_UV8?si=kb7C2WoPwqL_4VAp)
+## [통합 영상](https://youtube.com/shorts/IZrWX7b9LR8?si=yA0GcrZOKLtWjx4z)
 
 # 1. 프로젝트 소개
 ## 1-1. 목표
