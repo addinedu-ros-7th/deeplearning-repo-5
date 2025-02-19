@@ -3,6 +3,8 @@
 
 ## 👉 [통합 영상](https://youtu.be/33UZJujoVBs?si=Ll3DOmD68eE4wvqI)
 
+## 👉 [발표 자료](https://docs.google.com/presentation/d/1dvwK7o6es8Wn-Mrr18u-DYbreAsfyP4J_0AuqXVFU0I/edit?usp=sharing)
+
 # 1. 프로젝트 소개
 ## 1-1. 목표
 - 운동, 식단, 위험 상황 관리를 통합하여 개인의 건강을 AI로 관리하는 서비스 개발
@@ -168,7 +170,4 @@
 ### 향후 개선 방안
 - Docker와 같은 가상화 도구를 활용해 팀원 간 개발 환경을 통일.
 - 실제 서비스 출시를 통해 사용자 데이터를 추가적으로 수집하고, 이를 활용해 딥러닝 기반의 고도화된 서비스로 발전시킬 예정.
-
-# 5. 발표 자료
-https://docs.google.com/presentation/d/1dvwK7o6es8Wn-Mrr18u-DYbreAsfyP4J_0AuqXVFU0I/edit?usp=sharing
 
